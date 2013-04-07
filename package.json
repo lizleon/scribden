@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "dependencies": {
     "grunt-karma": "~0.3.0",
-    "express": "3.1.0"
+    "express": "3.1.0",
+    "passport": "0.1.16",
+    "passport-local": "0.1.6"
   },
   "devDependencies": {
     "grunt": "0.4.0rc7",
@@ -27,7 +29,9 @@
     "matchdep": "~0.1.1",
     "grunt-google-cdn": "~0.1.0",
     "grunt-ngmin": "~0.0.1",
-    "express": "3.1.0"
+    "express": "3.1.0",
+    "passport": "0.1.16",
+    "passport-local": "0.1.6"
   },
   "engines": {
     "node": ">=0.8.0"

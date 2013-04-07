@@ -1,17 +1,15 @@
 'use strict';
 
-angular.module('ScribdenApp', [])
+angular.module('ScribdenApp', [
+    'scribden-login'
+])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/register', {
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl'
+      .when('/dashboard', {
+        templateUrl: 'login/login.html',
+        controller: 'LoginCtrl'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/login'
       });
   });
