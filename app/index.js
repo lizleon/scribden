@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('ScribdenApp', [
-    'scribden-login'
+    'resources.scribden-resource',
+    'resources.user',
+    'login'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -12,4 +14,7 @@ angular.module('ScribdenApp', [
       .otherwise({
         redirectTo: '/login'
       });
-  });
+  })
+  .constant('API_PATH', {
+        baseURL: '/api/V1/'
+});

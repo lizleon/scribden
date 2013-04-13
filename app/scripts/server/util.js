@@ -9,26 +9,29 @@ function getSQLConnection() {
         userName: sqlConfig.user,
         password: sqlConfig.password
     });
+    var result = Q.defer();
     
     // connect to the DB
     conn.connect(function(error) {
         if (error != null) 
         {
             console.error('Received error', error);
+            result.reject(new Error(error));
         } 
         else 
         {
             console.log('Now connected, can start using');
+            result.resolve(conn);
         }
     });
-    
+    /*
     // listeners to receive errors and messages
     conn.on('error', function(error) {
       console.error('Received error', error);
     });
     conn.on('message', function(message) {
       console.info('Received info', message);
-    });
+    });*/
     
-    return conn;
+    return result.promise;
 }

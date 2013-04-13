@@ -3,40 +3,35 @@
 /* Services */
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    express = require('express');
-    //app = express();
+    User = require('./user.js');
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
         console.log('getting user info...');
-        var result = User.getUserByUsername(username, function(err, result) {
-            if(err)
-            {
-                return done(null, false, { message: err });
-            }
-            else if(!result)
-            {
+        var user;
+        var userPromise = User.getScribdenUserByUsername(username);
+        userPromise.then(function(response) {
+            user = response;
+            
+            if(!response) {
                 return done(null, false, { message: 'Incorrect username.' });
             }
-            else if(result.getValue('Password') != password)
-            {
+            else if(response.password != password) {
                 return done(null, false, { message: 'Incorrect password.' });
             }
-            else
-            {
-                return done(null, result);
+            else {
+                return done(null, response);
             }
         });
     }
 ));
 
-// var app = express();
-//app.post('/authenticate',
+exports.passport = passport;
 exports.authenticate = passport.authenticate('local', { successRedirect: '/dashboard',
-                                   failureRedirect: '/login' },
-                      function(req, res) {
-                        res.redirect('/');
-                      });
+                                    failureRedirect: '/login' },
+                                    function(req, res) {
+                                        res.redirect('/');
+                                    });
 
 /*
 app.get('/logout', function(req, res){
@@ -54,5 +49,3 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
-
-exports.passport = passport;

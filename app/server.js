@@ -11,10 +11,14 @@ var express = require('express'),
         "database": process.env.PARAM5,
         "port": process.env.PORT
     },
+    dbConnect = require('./scripts/server/util.js'),
+    Q = require('q'),
     port = process.env.PORT || 3000,
-    emptyQuery = { 'meta' : [ { } ], 'rows' : [ { } ] };
+    emptyQuery = { 'meta' : [ { } ], 'rows' : [ { } ] },
+    API_PATH = '/api/v1';
 
-apiLogin = require('./scripts/services/login.js');
+apiLogin = require('./scripts/server/login.js');
+apiUser = require('./scripts/server/user.js');
     
 app.configure(function () {
 	app.use(express.favicon());
@@ -23,11 +27,13 @@ app.configure(function () {
     app.use(apiLogin.passport.initialize());
     //app.use(apiLogin.passport.session());
 	app.use(app.router);
-	app.use(express.static(__dirname));
+	app.use(express.static(__dirname)); // routes the user to the home page
 	app.use(express.errorHandler({dumpExceptions: true, showStack: true, showMessage: true}));
 });
 
 app.post('/authenticate', apiLogin.authenticate);
+app.get(API_PATH + '/user/name/:username', apiUser.getScribdenUserByUsername);
+app.post(API_PATH + '/user/', apiUser.insertScribdenUser);
 
 app.listen(port, function() {
     console.log("Listening on " + port);

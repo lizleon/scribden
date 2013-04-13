@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('scribden-login', [])
+angular.module('login', ['resources.user'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/login', {
@@ -13,16 +13,21 @@ angular.module('scribden-login', [])
       });
   }])
   .controller('LoginCtrl', [ '$scope', function LoginCtrl($scope) { } ])
-  .controller('RegisterCtrl', [ '$scope', '$http', '$location', function RegisterCtrl($scope, $http, $location) {
+  .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', function RegisterCtrl(User, $scope, $http, $location) {
       $scope.form = {};
       $scope.register = function () {
-          $http.post('/authenticate', $scope.form)
-          .success(function(data) {
-              //$location.path('/dashboard');
-              console.log('success');
-          })
-          .error(function(err) {
-              console.log(err);
+          User.insert({ 
+              data: $scope.form,
+              successCallback: function(data) {
+                  $http.post('/authenticate', $scope.form)
+                      .success(function(data) {
+                          $location.path('/dashboard');
+                          console.log('success');
+                      })
+                      .error(function(err) {
+                          console.log(err);
+                      });
+              }
           });
       };
   } ])
