@@ -1,5 +1,5 @@
 'use strict';
-
+// define root application
 angular.module('ScribdenApp', [
     'resources.scribden-resource',
     'resources.user',
@@ -15,6 +15,7 @@ angular.module('ScribdenApp', [
         redirectTo: '/login'
       });
   })
+  // base url to use when calling the server
   .constant('API_PATH', {
-        baseURL: '/api/V1/'
+        baseURL: '/api/v1/'
 });

@@ -7,12 +7,9 @@ var passport = require('passport'),
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log('getting user info...');
-        var user;
+        console.log('init password strategy for ' + username + '...');
         var userPromise = User.getScribdenUserByUsername(username);
         userPromise.then(function(response) {
-            user = response;
-            
             if(!response) {
                 return done(null, false, { message: 'Incorrect username.' });
             }

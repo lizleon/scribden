@@ -1,7 +1,18 @@
+var sqlConfig = {
+    "host": process.env.RDS_HOSTNAME || 'aa1ei41n0xy1pya.csbyj0crnkqp.us-east-1.rds.amazonaws.com',
+    "port": process.env.RDS_PORT || '1433',
+    "user": process.env.RDS_USERNAME || 'scribdenadmin',
+    "password": process.env.RDS_PASSWORD || 'AlbireoGraveyard',
+    "database": process.env.PARAM5 || 'Production'
+}
+
 // var sql declared in scripts/server.js
-function getSQLConnection() {
-    // sqlConfig is declared in server.js/sql-config.json
+exports.getSQLConnection = function() {
     // create a connection to the DB
+    var Q = require('Q');
+    var sql = require('tds');
+    var result = Q.defer();
+    
     var conn = new sql.Connection({
         host: sqlConfig.host,
         port: sqlConfig.port,
@@ -9,7 +20,6 @@ function getSQLConnection() {
         userName: sqlConfig.user,
         password: sqlConfig.password
     });
-    var result = Q.defer();
     
     // connect to the DB
     conn.connect(function(error) {

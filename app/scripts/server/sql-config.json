@@ -1,8 +1,0 @@
-{
-    "driver": process.env.PARAM1,
-    "server": process.env.PARAM2,
-    "user": process.env.PARAM3,
-    "password": process.env.PARAM4,
-    "database": process.env.PARAM5,
-    "port": process.env.PORT
-}
