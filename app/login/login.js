@@ -16,53 +16,61 @@ angular.module('login', ['resources.user'])
   .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', function RegisterCtrl(User, $scope, $http, $location) {
       // variable will be filled with html elements using 'form.<element>'
       $scope.form = {};
-      // @TODO: validation for username
-      // @TODO: validation for password
-      // @TODO: verify that the passwords match
+      $scope.isUsernameValid = true;
+      $scope.isUsernameAvailable = true;
+      $scope.isEmailValid = true;
+      $scope.isPasswordValid = true;
+      $scope.isPasswordMatched = true;
       
       // register the user
       $scope.register = function() {
-          /*
-          User.query({
-              path: 'name/' + $scope.form.username,
-              successCallback: function(data) {
-                  console.log(data);
-              }
-          });
-          */
-                      $http.post('/authenticate', $scope.form)
-                          .success(function(data) {
-                              console.log('authenticated!');
-                              $location.path('/dashboard');
-                          })
-                          .error(function(err) {
-                              console.log('error');
-                              console.log(err);
-                          });
-          /*
-          User.insert({
-              data: $scope.form,
-              successCallback: function(data) {
-                    if(data.error) {
-                      // error handler here
-                      console.log(data.error);
-                    }
-                    else if(data.result) {
-                      // authenticate the user and redirect to their den
-                      $http.post('/authenticate', $scope.form)
-                          .success(function(data) {
-                              $location.path('/dashboard');
-                              console.log('success');
-                          })
-                          .error(function(err) {
-                              console.log(err);
-                          }); 
-                    }
-                    else {
-                      // error handler here
-                      console.log('insert failed, no error returned');
-                    }
-                }
-            });*/
+          // validate form
+          var usernameValidation = /^([a-zA-Z0-9_-]){3,32}$/;
+          var emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+          var passwordValidation = /^[a-zA-Z0-9]{6,16}$/;
+          $scope.isUsernameValid = usernameValidation.test($scope.form.username);
+          $scope.isEmailValid = emailValidation.test($scope.form.email);
+          $scope.isPasswordValid = passwordValidation.test($scope.form.password) && passwordValidation.test($scope.form.confirmpwd);
+          $scope.isPasswordMatched = $scope.form.password == $scope.form.confirmpwd;
+          
+          // check form validity
+          if($scope.isUsernameValid && $scope.isEmailValid && $scope.isPasswordValid && $scope.isPasswordMatched) {
+              // check username availability
+              User.query({
+                  path: 'name/' + $scope.form.username,
+                  successCallback: function(data) {
+                      console.log(data);
+                      if(data.result && data.result.length > 0) {
+                          $scope.isUsernameAvailable = false;
+                      }
+                      else {
+                          // register new user
+                          User.insert({
+                              data: $scope.form,
+                              successCallback: function(data) {
+                                    if(data.error) {
+                                      // error handler here
+                                      console.log(data.error);
+                                    }
+                                    else if(data.result) {
+                                      // authenticate the user and redirect to their den
+                                      $http.post('/authenticate', $scope.form)
+                                          .success(function(data) {
+                                              $location.path('/dashboard');
+                                          })
+                                          .error(function(err) {
+                                              console.log(err);
+                                          }); 
+                                    }
+                                    else {
+                                      // error handler here
+                                      console.log('insert failed, no error returned');
+                                    }
+                                }
+                            });
+                      }
+                  }
+              });
+          }
         };
   }]);
