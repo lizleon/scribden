@@ -52,7 +52,7 @@ angular.module('resources.scribden-resource', []).factory('ScribdenResource', ['
 		   var defaultConfigCopy = angular.copy(defaultConfig);
            var newConfig;
             
-            if(angular.isObject(configObject)) {
+            if(angular.isObject(config)) {
                 newConfig = angular.extend(defaultConfigCopy, config);
             } 
             else {

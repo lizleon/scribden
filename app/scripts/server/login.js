@@ -9,16 +9,21 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
         console.log('init password strategy for ' + username + '...');
         var userPromise = User.getScribdenUserByUsername(username);
-        userPromise.then(function(response) {
-            if(!response) {
+        userPromise.then(function(value) {
+            console.log(value);
+            if(!value) {
                 return done(null, false, { message: 'Incorrect username.' });
             }
             else if(response.password != password) {
                 return done(null, false, { message: 'Incorrect password.' });
             }
             else {
-                return done(null, response);
+                return done(null, value);
             }
+        }, function(reason) {
+            // error handling here
+            console.log(reason);
+            return done(null, false, { message: reason });
         });
     }
 ));

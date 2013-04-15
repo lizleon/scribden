@@ -33,8 +33,8 @@ app.configure(function () {
 });
 
 app.post('/authenticate', apiLogin.authenticate);
-app.get(API_PATH + 'user/name/:username', apiUser.getScribdenUserByUsername);
-app.post(API_PATH + 'user', apiUser.insertScribdenUser);
+app.get(API_PATH + 'user/name/:username', apiUser.getScribdenUserByUsernameProxy);
+app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
 
 app.listen(port, function() {
     console.log("Listening on " + port);

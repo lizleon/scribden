@@ -21,7 +21,24 @@ angular.module('login', ['resources.user'])
       // @TODO: verify that the passwords match
       
       // register the user
-      $scope.register = function () {
+      $scope.register = function() {
+          
+          User.query({
+              path: 'name/' + $scope.form.username,
+              successCallback: function(data) {
+                  console.log(data);
+              }
+          });
+          /*
+                      $http.post('/authenticate', $scope.form)
+                          .success(function(data) {
+                              $location.path('/dashboard');
+                              console.log('success');
+                          })
+                          .error(function(err) {
+                              console.log(err);
+                          }); */
+          /*
           User.insert({
               data: $scope.form,
               successCallback: function(data) {
@@ -45,6 +62,6 @@ angular.module('login', ['resources.user'])
                       console.log('insert failed, no error returned');
                     }
                 }
-            });
+            });*/
         };
   }]);
