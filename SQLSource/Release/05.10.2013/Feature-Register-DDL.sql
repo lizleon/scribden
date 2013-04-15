@@ -44,8 +44,9 @@ GO
 
 CREATE TABLE [dbo].[ScribdenUser](
 [ScribdenUserKey] [int] IDENTITY(1,1) NOT NULL,
-[Username] [varchar](255) NOT NULL,
-[Password] [varchar](255) NOT NULL,
+[Username] [varchar](32) NOT NULL,
+[Password] [varchar](16) NOT NULL,
+[Email] [varchar](255) NOT NULL,
 [Active] [bit] NOT NULL,
 [ModDate] [datetime] NOT NULL,
  CONSTRAINT [PK_ScribdenUser_ScribdenUserKey] PRIMARY KEY CLUSTERED

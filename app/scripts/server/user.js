@@ -1,7 +1,7 @@
 exports.getScribdenUserByUsernameProxy = function(req, res) {
     var util = require('./util.js');
-    var deferred = exports.getScribdenUserByUsername(req.params.username);
-    util.initPromiseCallback(deferred, res);
+    var promise = exports.getScribdenUserByUsername(req.params.username);
+    util.initPromiseCallback(promise, res);
 }
 
 exports.getScribdenUserByUsername = function(username) {
@@ -15,8 +15,8 @@ exports.getScribdenUserByUsername = function(username) {
 
 exports.getScribdenUserByIdProxy = function(req, res) {
     var util = require('./util.js');
-    var deferred = exports.getScribdenUserById(req.params.id);
-    util.initPromiseCallback(deferred, res);
+    var promise = exports.getScribdenUserById(req.params.id);
+    util.initPromiseCallback(promise, res);
 }
 
 exports.getScribdenUserById = function(id) {
@@ -30,17 +30,19 @@ exports.getScribdenUserById = function(id) {
 
 exports.insertScribdenUserProxy = function(req, res) {
     var util = require('./util.js');
-    var deferred = exports.insertScribdenUser(req.body.username, req.body.password);
-    util.initPromiseCallback(deferred, res);
+    var promise = exports.insertScribdenUser(req.body.username, req.body.password, req.body.email);
+    util.initPromiseCallback(promise, res);
 }
 
-exports.insertScribdenUser = function(req, res) {
+exports.insertScribdenUser = function(username, password, email) {
     var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPInsertScribdenUser @usernameParam, @passwordParam END', {
-            usernameParam: { type: 'VarChar', size: 255 },
-            passwordParam: { type: 'VarChar', size: 255 }
+    return util.generalQuery('BEGIN EXEC SPInsertScribdenUser @usernameParam, @passwordParam, @emailParam END', {
+            usernameParam: { type: 'VarChar', size: 32 },
+            passwordParam: { type: 'VarChar', size: 15 },
+            emailParam: { type: 'VarChar', size: 255 }
         }, { 
-            usernameParam : req.body.username,
-            passwordParam : req.body.password
+            usernameParam : username,
+            passwordParam : password,
+            emailParam : email
         });
 }

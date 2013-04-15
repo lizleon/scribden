@@ -1,0 +1,295 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files (x86)\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'express' ]
+2 info using npm@1.2.15
+3 info using node@v0.10.1
+4 verbose read json d:\Scribden\package.json
+5 verbose read json d:\Scribden\node_modules\async\package.json
+6 verbose read json d:\Scribden\node_modules\express\package.json
+7 verbose read json d:\Scribden\node_modules\generator-angular\package.json
+8 verbose read json d:\Scribden\node_modules\generator-karma\package.json
+9 verbose read json d:\Scribden\node_modules\grunt\package.json
+10 verbose read json d:\Scribden\node_modules\grunt-bower-hooks\package.json
+11 verbose read json d:\Scribden\node_modules\grunt-contrib-clean\package.json
+12 verbose read json d:\Scribden\node_modules\grunt-contrib-coffee\package.json
+13 verbose read json d:\Scribden\node_modules\grunt-contrib-compass\package.json
+14 verbose read json d:\Scribden\node_modules\grunt-contrib-concat\package.json
+15 verbose read json d:\Scribden\node_modules\grunt-contrib-connect\package.json
+16 verbose read json d:\Scribden\node_modules\grunt-contrib-copy\package.json
+17 verbose read json d:\Scribden\node_modules\grunt-contrib-htmlmin\package.json
+18 verbose read json d:\Scribden\node_modules\grunt-contrib-imagemin\package.json
+19 verbose read json d:\Scribden\node_modules\grunt-contrib-jshint\package.json
+20 verbose read json d:\Scribden\node_modules\grunt-contrib-livereload\package.json
+21 verbose read json d:\Scribden\node_modules\grunt-contrib-mincss\package.json
+22 verbose read json d:\Scribden\node_modules\grunt-contrib-uglify\package.json
+23 verbose read json d:\Scribden\node_modules\grunt-google-cdn\package.json
+24 verbose read json d:\Scribden\node_modules\grunt-karma\package.json
+25 verbose read json d:\Scribden\node_modules\grunt-ngmin\package.json
+26 verbose read json d:\Scribden\node_modules\grunt-open\package.json
+27 verbose read json d:\Scribden\node_modules\grunt-regarde\package.json
+28 verbose read json d:\Scribden\node_modules\grunt-usemin\package.json
+29 verbose read json d:\Scribden\node_modules\jade\package.json
+30 verbose read json d:\Scribden\node_modules\karma\package.json
+31 verbose read json d:\Scribden\node_modules\matchdep\package.json
+32 verbose read json d:\Scribden\node_modules\mocha\package.json
+33 verbose read json d:\Scribden\node_modules\node\package.json
+34 verbose read json d:\Scribden\node_modules\node-gyp\package.json
+35 verbose read json d:\Scribden\node_modules\node-inspector\package.json
+36 verbose read json d:\Scribden\node_modules\passport\package.json
+37 verbose read json d:\Scribden\node_modules\passport-local\package.json
+38 verbose read json d:\Scribden\node_modules\q\package.json
+39 verbose read json d:\Scribden\node_modules\socket.io\package.json
+40 verbose read json d:\Scribden\node_modules\tds\package.json
+41 verbose from cache d:\Scribden\package.json
+42 verbose readDependencies using package.json deps
+43 verbose cache add [ 'express@3.1.0', null ]
+44 verbose cache add name=undefined spec="express@3.1.0" args=["express@3.1.0",null]
+45 verbose parsed url { protocol: null,
+45 verbose parsed url   slashes: null,
+45 verbose parsed url   auth: null,
+45 verbose parsed url   host: null,
+45 verbose parsed url   port: null,
+45 verbose parsed url   hostname: null,
+45 verbose parsed url   hash: null,
+45 verbose parsed url   search: null,
+45 verbose parsed url   query: null,
+45 verbose parsed url   pathname: 'express@3.1.0',
+45 verbose parsed url   path: 'express@3.1.0',
+45 verbose parsed url   href: 'express@3.1.0' }
+46 verbose cache add name="express" spec="3.1.0" args=["express","3.1.0"]
+47 verbose parsed url { protocol: null,
+47 verbose parsed url   slashes: null,
+47 verbose parsed url   auth: null,
+47 verbose parsed url   host: null,
+47 verbose parsed url   port: null,
+47 verbose parsed url   hostname: null,
+47 verbose parsed url   hash: null,
+47 verbose parsed url   search: null,
+47 verbose parsed url   query: null,
+47 verbose parsed url   pathname: '3.1.0',
+47 verbose parsed url   path: '3.1.0',
+47 verbose parsed url   href: '3.1.0' }
+48 verbose addNamed [ 'express', '3.1.0' ]
+49 verbose addNamed [ '3.1.0', '3.1.0' ]
+50 silly lockFile 0557bc2a-express-3-1-0 express@3.1.0
+51 verbose lock express@3.1.0 C:\Users\asus\AppData\Roaming\npm-cache\0557bc2a-express-3-1-0.lock
+52 verbose url raw express/3.1.0
+53 verbose url resolving [ 'https://registry.npmjs.org/', './express/3.1.0' ]
+54 verbose url resolved https://registry.npmjs.org/express/3.1.0
+55 info trying registry request attempt 1 at 13:18:52
+56 verbose etag "1MS3OVEVATHJB8L371LM7F173"
+57 http GET https://registry.npmjs.org/express/3.1.0
+58 http 200 https://registry.npmjs.org/express/3.1.0
+59 silly registry.get cb [ 200,
+59 silly registry.get   { vary: 'Accept',
+59 silly registry.get     server: 'CouchDB/1.3.0 (Erlang OTP/R15B03)',
+59 silly registry.get     etag: '"AKI4321SMD1D63PXYSOJS0YMA"',
+59 silly registry.get     date: 'Mon, 15 Apr 2013 18:18:55 GMT',
+59 silly registry.get     'content-type': 'application/json',
+59 silly registry.get     'content-length': '7541' } ]
+60 silly lockFile 4542da4e-js-org-express-express-3-1-0-tgz https://registry.npmjs.org/express/-/express-3.1.0.tgz
+61 verbose lock https://registry.npmjs.org/express/-/express-3.1.0.tgz C:\Users\asus\AppData\Roaming\npm-cache\4542da4e-js-org-express-express-3-1-0-tgz.lock
+62 verbose addRemoteTarball [ 'https://registry.npmjs.org/express/-/express-3.1.0.tgz',
+62 verbose addRemoteTarball   'f869b2d92320f5c3dd496c172e06f02b6ad43310' ]
+63 info retry fetch attempt 1 at 13:18:54
+64 verbose fetch to= C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+65 http GET https://registry.npmjs.org/express/-/express-3.1.0.tgz
+66 http 200 https://registry.npmjs.org/express/-/express-3.1.0.tgz
+67 silly shasum updated bytes 35342
+68 info shasum f869b2d92320f5c3dd496c172e06f02b6ad43310
+68 info shasum C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+69 verbose tar unpack C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+70 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+71 verbose lock C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package C:\Users\asus\AppData\Roaming\npm-cache\92b1458e-4591-0-31008701934479177-package.lock
+72 silly lockFile e8f4ed07-4591-0-31008701934479177-tmp-tgz C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+73 verbose lock C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz C:\Users\asus\AppData\Roaming\npm-cache\e8f4ed07-4591-0-31008701934479177-tmp-tgz.lock
+74 silly gunzTarPerm modes [ '755', '644' ]
+75 silly gunzTarPerm extractEntry package.json
+76 silly gunzTarPerm extractEntry .npmignore
+77 silly gunzTarPerm extractEntry LICENSE
+78 silly gunzTarPerm extractEntry client.js
+79 silly gunzTarPerm extractEntry index.js
+80 silly gunzTarPerm extractEntry test.js
+81 silly gunzTarPerm extractEntry .travis.yml
+82 silly gunzTarPerm extractEntry History.md
+83 silly gunzTarPerm extractEntry Makefile
+84 silly gunzTarPerm extractEntry bin/express
+85 silly gunzTarPerm extractEntry Readme.md
+86 silly gunzTarPerm extractEntry lib/application.js
+87 silly gunzTarPerm extractEntry lib/express.js
+88 silly gunzTarPerm extractEntry lib/middleware.js
+89 silly gunzTarPerm extractEntry lib/request.js
+90 silly gunzTarPerm extractEntry lib/response.js
+91 silly gunzTarPerm extractEntry lib/utils.js
+92 silly gunzTarPerm extractEntry lib/view.js
+93 silly gunzTarPerm extractEntry lib/router/index.js
+94 silly gunzTarPerm extractEntry lib/router/route.js
+95 verbose read json C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package\package.json
+96 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+97 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+98 silly lockFile e8f4ed07-4591-0-31008701934479177-tmp-tgz C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+99 silly lockFile e8f4ed07-4591-0-31008701934479177-tmp-tgz C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\tmp.tgz
+100 verbose from cache C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package\package.json
+101 verbose tar pack [ 'C:\\Users\\asus\\AppData\\Roaming\\npm-cache\\express\\3.1.0\\package.tgz',
+101 verbose tar pack   'C:\\Users\\asus\\AppData\\Local\\Temp\\npm-2284\\1366049934591-0.31008701934479177\\package' ]
+102 verbose tarball C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+103 verbose folder C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+104 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+105 verbose lock C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package C:\Users\asus\AppData\Roaming\npm-cache\92b1458e-4591-0-31008701934479177-package.lock
+106 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+107 verbose lock C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz C:\Users\asus\AppData\Roaming\npm-cache\1dd164e2--cache-express-3-1-0-package-tgz.lock
+108 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+109 silly lockFile 92b1458e-4591-0-31008701934479177-package C:\Users\asus\AppData\Local\Temp\npm-2284\1366049934591-0.31008701934479177\package
+110 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+111 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+112 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+113 verbose lock C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package C:\Users\asus\AppData\Roaming\npm-cache\63489578--npm-cache-express-3-1-0-package.lock
+114 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+115 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+116 verbose tar unpack C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+117 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+118 verbose lock C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package C:\Users\asus\AppData\Roaming\npm-cache\63489578--npm-cache-express-3-1-0-package.lock
+119 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+120 verbose lock C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz C:\Users\asus\AppData\Roaming\npm-cache\1dd164e2--cache-express-3-1-0-package-tgz.lock
+121 silly gunzTarPerm modes [ '755', '644' ]
+122 silly gunzTarPerm extractEntry package.json
+123 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+124 silly gunzTarPerm extractEntry .npmignore
+125 silly gunzTarPerm modified mode [ '.npmignore', 438, 420 ]
+126 silly gunzTarPerm extractEntry LICENSE
+127 silly gunzTarPerm modified mode [ 'LICENSE', 438, 420 ]
+128 silly gunzTarPerm extractEntry client.js
+129 silly gunzTarPerm modified mode [ 'client.js', 438, 420 ]
+130 silly gunzTarPerm extractEntry index.js
+131 silly gunzTarPerm modified mode [ 'index.js', 438, 420 ]
+132 silly gunzTarPerm extractEntry test.js
+133 silly gunzTarPerm modified mode [ 'test.js', 438, 420 ]
+134 silly gunzTarPerm extractEntry .travis.yml
+135 silly gunzTarPerm modified mode [ '.travis.yml', 438, 420 ]
+136 silly gunzTarPerm extractEntry History.md
+137 silly gunzTarPerm modified mode [ 'History.md', 438, 420 ]
+138 silly gunzTarPerm extractEntry Makefile
+139 silly gunzTarPerm modified mode [ 'Makefile', 438, 420 ]
+140 silly gunzTarPerm extractEntry bin/express
+141 silly gunzTarPerm modified mode [ 'bin/express', 438, 420 ]
+142 silly gunzTarPerm extractEntry Readme.md
+143 silly gunzTarPerm modified mode [ 'Readme.md', 438, 420 ]
+144 silly gunzTarPerm extractEntry lib/application.js
+145 silly gunzTarPerm modified mode [ 'lib/application.js', 438, 420 ]
+146 silly gunzTarPerm extractEntry lib/express.js
+147 silly gunzTarPerm modified mode [ 'lib/express.js', 438, 420 ]
+148 silly gunzTarPerm extractEntry lib/middleware.js
+149 silly gunzTarPerm modified mode [ 'lib/middleware.js', 438, 420 ]
+150 silly gunzTarPerm extractEntry lib/request.js
+151 silly gunzTarPerm modified mode [ 'lib/request.js', 438, 420 ]
+152 silly gunzTarPerm extractEntry lib/response.js
+153 silly gunzTarPerm modified mode [ 'lib/response.js', 438, 420 ]
+154 silly gunzTarPerm extractEntry lib/utils.js
+155 silly gunzTarPerm modified mode [ 'lib/utils.js', 438, 420 ]
+156 silly gunzTarPerm extractEntry lib/view.js
+157 silly gunzTarPerm modified mode [ 'lib/view.js', 438, 420 ]
+158 silly gunzTarPerm extractEntry lib/router/index.js
+159 silly gunzTarPerm modified mode [ 'lib/router/index.js', 438, 420 ]
+160 silly gunzTarPerm extractEntry lib/router/route.js
+161 silly gunzTarPerm modified mode [ 'lib/router/route.js', 438, 420 ]
+162 verbose read json C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package\package.json
+163 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+164 silly lockFile 63489578--npm-cache-express-3-1-0-package C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package
+165 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+166 silly lockFile 1dd164e2--cache-express-3-1-0-package-tgz C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+167 silly shasum updated bytes 35195
+168 info shasum e47c28c92aa3ee3a892750235f0c1221cf230f8d
+168 info shasum C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+169 verbose from cache C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package\package.json
+170 verbose chmod C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz 644
+171 silly chown skipping for windows C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package.tgz
+172 silly lockFile 4542da4e-js-org-express-express-3-1-0-tgz https://registry.npmjs.org/express/-/express-3.1.0.tgz
+173 silly lockFile 4542da4e-js-org-express-express-3-1-0-tgz https://registry.npmjs.org/express/-/express-3.1.0.tgz
+174 silly lockFile 0557bc2a-express-3-1-0 express@3.1.0
+175 silly lockFile 0557bc2a-express-3-1-0 express@3.1.0
+176 silly resolved [ { name: 'express',
+176 silly resolved     description: 'Sinatra inspired web development framework',
+176 silly resolved     version: '3.1.0',
+176 silly resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+176 silly resolved     contributors: [ [Object], [Object], [Object], [Object] ],
+176 silly resolved     dependencies:
+176 silly resolved      { connect: '2.7.2',
+176 silly resolved        commander: '0.6.1',
+176 silly resolved        'range-parser': '0.0.4',
+176 silly resolved        mkdirp: '0.3.3',
+176 silly resolved        cookie: '0.0.5',
+176 silly resolved        'buffer-crc32': '0.1.1',
+176 silly resolved        fresh: '0.1.0',
+176 silly resolved        methods: '0.0.1',
+176 silly resolved        send: '0.1.0',
+176 silly resolved        'cookie-signature': '0.0.1',
+176 silly resolved        debug: '*' },
+176 silly resolved     devDependencies:
+176 silly resolved      { ejs: '*',
+176 silly resolved        mocha: '*',
+176 silly resolved        jade: '*',
+176 silly resolved        hjs: '*',
+176 silly resolved        stylus: '*',
+176 silly resolved        should: '*',
+176 silly resolved        'connect-redis': '*',
+176 silly resolved        'github-flavored-markdown': '*',
+176 silly resolved        supertest: '0.0.1' },
+176 silly resolved     keywords:
+176 silly resolved      [ 'express',
+176 silly resolved        'framework',
+176 silly resolved        'sinatra',
+176 silly resolved        'web',
+176 silly resolved        'rest',
+176 silly resolved        'restful',
+176 silly resolved        'router',
+176 silly resolved        'app',
+176 silly resolved        'api' ],
+176 silly resolved     repository: { type: 'git', url: 'git://github.com/visionmedia/express' },
+176 silly resolved     main: 'index',
+176 silly resolved     bin: { express: './bin/express' },
+176 silly resolved     scripts: { prepublish: 'npm prune', test: 'make test' },
+176 silly resolved     engines: { node: '*' },
+176 silly resolved     readme: '![express logo](http://f.cl.ly/items/0V2S1n0K1i3y1c122g04/Screen%20Shot%202012-04-11%20at%209.59.42%20AM.png)\n\n  Fast, unopinionated, minimalist web framework for [node](http://nodejs.org). [![Build Status](https://secure.travis-ci.org/visionmedia/express.png)](http://travis-ci.org/visionmedia/express)\n\n```js\nvar express = require(\'express\');\nvar app = express();\n\napp.get(\'/\', function(req, res){\n  res.send(\'Hello World\');\n});\n\napp.listen(3000);\n```\n\n## Installation\n\n    $ npm install -g express\n\n## Quick Start\n\n The quickest way to get started with express is to utilize the executable `express(1)` to generate an application as shown below:\n\n Create the app:\n\n    $ npm install -g express\n    $ express /tmp/foo && cd /tmp/foo\n\n Install dependencies:\n\n    $ npm install\n\n Start the server:\n\n    $ node app\n\n## Features\n\n  * Built on [Connect](http://github.com/senchalabs/connect)\n  * Robust routing\n  * HTTP helpers (redirection, caching, etc)\n  * View system supporting 14+ template engines\n  * Content negotiation\n  * Focus on high performance\n  * Environment based configuration\n  * Executable for generating applications quickly\n  * High test coverage\n\n## Philosophy\n\n  The Express philosophy is to provide small, robust tooling for HTTP servers. Making\n  it a great solution for single page applications, web sites, hybrids, or public\n  HTTP APIs.\n  \n  Built on Connect you can use _only_ what you need, and nothing more, applications\n  can be as big or as small as you like, even a single file. Express does\n  not force you to use any specific ORM or template engine. With support for over\n  14 template engines via [Consolidate.js](http://github.com/visionmedia/consolidate.js)\n  you can quickly craft your perfect framework.\n\n## More Information\n\n  * Join #express on freenode\n  * [Google Group](http://groups.google.com/group/express-js) for discussion\n  * Follow [tjholowaychuk](http://twitter.com/tjholowaychuk) on twitter for updates\n  * Visit the [Wiki](http://github.com/visionmedia/express/wiki)\n  * [日本語ドキュメンテーション](http://hideyukisaito.com/doc/expressjs/) by [hideyukisaito](https://github.com/hideyukisaito)\n  * [Русскоязычная документация](http://express-js.ru/)\n\n## Viewing Examples\n\nClone the Express repo, then install the dev dependencies to install all the example / test suite deps:\n\n    $ git clone git://github.com/visionmedia/express.git --depth 1\n    $ cd express\n    $ npm install\n\nthen run whichever tests you want:\n\n    $ node examples/content-negotiation\n\n## Running Tests\n\nTo run the test suite first invoke the following command within the repo, installing the development dependencies:\n\n    $ npm install\n\nthen run the tests:\n\n    $ make test\n\n## Contributors\n\n```\nproject: express\ncommits: 3559\nactive : 468 days\nfiles  : 237\nauthors: \n 1891\tTj Holowaychuk          53.1%\n 1285\tvisionmedia             36.1%\n  182\tTJ Holowaychuk          5.1%\n   54\tAaron Heckmann          1.5%\n   34\tcsausdev                1.0%\n   26\tciaranj                 0.7%\n   21\tRobert Sköld            0.6%\n    6\tGuillermo Rauch         0.2%\n    3\tDav Glass               0.1%\n    3\tNick Poulden            0.1%\n    2\tRandy Merrill           0.1%\n    2\tBenny Wong              0.1%\n    2\tHunter Loftis           0.1%\n    2\tJake Gordon             0.1%\n    2\tBrian McKinney          0.1%\n    2\tRoman Shtylman          0.1%\n    2\tBen Weaver              0.1%\n    2\tDave Hoover             0.1%\n    2\tEivind Fjeldstad        0.1%\n    2\tDaniel Shaw             0.1%\n    1\tMatt Colyer             0.0%\n    1\tPau Ramon               0.0%\n    1\tPero Pejovic            0.0%\n    1\tPeter Rekdal Sunde      0.0%\n    1\tRaynos                  0.0%\n    1\tTeng Siong Ong          0.0%\n    1\tViktor Kelemen          0.0%\n    1\tctide                   0.0%\n    1\t8bitDesigner            0.0%\n    1\tisaacs                  0.0%\n    1\tmgutz                   0.0%\n    1\tpikeas                  0.0%\n    1\tshuwatto                0.0%\n    1\ttstrimple               0.0%\n    1\tewoudj                  0.0%\n    1\tAdam Sanderson          0.0%\n    1\tAndrii Kostenko         0.0%\n    1\tAndy Hiew               0.0%\n    1\tArpad Borsos            0.0%\n    1\tAshwin Purohit          0.0%\n    1\tBenjen                  0.0%\n    1\tDarren Torpey           0.0%\n    1\tGreg Ritter             0.0%\n    1\tGregory Ritter          0.0%\n    1\tJames Herdman           0.0%\n    1\tJim Snodgrass           0.0%\n    1\tJoe McCann              0.0%\n    1\tJonathan Dumaine        0.0%\n    1\tJonathan Palardy        0.0%\n    1\tJonathan Zacsh          0.0%\n    1\tJustin Lilly            0.0%\n    1\tKen Sato                0.0%\n    1\tMaciej Małecki          0.0%\n    1\tMasahiro Hayashi        0.0%\n```\n\n## License \n\n(The MIT License)\n\nCopyright (c) 2009-2012 TJ Holowaychuk &lt;tj@vision-media.ca&gt;\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\'Software\'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \'AS IS\', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n',
+176 silly resolved     readmeFilename: 'Readme.md',
+176 silly resolved     _id: 'express@3.1.0',
+176 silly resolved     dist: { shasum: 'e47c28c92aa3ee3a892750235f0c1221cf230f8d' },
+176 silly resolved     _from: 'express@3.1.0',
+176 silly resolved     _resolved: 'https://registry.npmjs.org/express/-/express-3.1.0.tgz' } ]
+177 info install express@3.1.0 into d:\Scribden
+178 info installOne express@3.1.0
+179 verbose from cache C:\Users\asus\AppData\Roaming\npm-cache\express\3.1.0\package\package.json
+180 info d:\Scribden\node_modules\express unbuild
+181 verbose from cache d:\Scribden\node_modules\express\package.json
+182 info preuninstall express@3.1.0
+183 info uninstall express@3.1.0
+184 verbose true,d:\Scribden\node_modules,d:\Scribden\node_modules unbuild express@3.1.0
+185 verbose d:\Scribden\node_modules\.bin,[object Object] binRoot
+186 info postuninstall express@3.1.0
+187 info d:\Scribden\node_modules\express unbuild
+188 verbose read json d:\Scribden\node_modules\express\package.json
+189 info preuninstall express@3.1.0
+190 info uninstall express@3.1.0
+191 verbose true,d:\Scribden\node_modules,d:\Scribden\node_modules unbuild express@3.1.0
+192 verbose d:\Scribden\node_modules\.bin,[object Object] binRoot
+193 info postuninstall express@3.1.0
+194 error error rolling back Error: EBUSY, unlink 'd:\Scribden\node_modules\express'
+194 error error rolling back  express@3.1.0 { [Error: EBUSY, unlink 'd:\Scribden\node_modules\express']
+194 error error rolling back   errno: 10,
+194 error error rolling back   code: 'EBUSY',
+194 error error rolling back   path: 'd:\\Scribden\\node_modules\\express' }
+195 error Error: EBUSY, unlink 'd:\Scribden\node_modules\express'
+196 error If you need help, you may report this log at:
+196 error     <http://github.com/isaacs/npm/issues>
+196 error or email it to:
+196 error     <npm-@googlegroups.com>
+197 error System Windows_NT 6.1.7601
+198 error command "c:\\Program Files (x86)\\nodejs\\node.exe" "c:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "express"
+199 error cwd d:\Scribden
+200 error node -v v0.10.1
+201 error npm -v 1.2.15
+202 error path d:\Scribden\node_modules\express
+203 error code EBUSY
+204 error errno 10
+205 verbose exit [ 10, true ]

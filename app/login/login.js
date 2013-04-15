@@ -1,6 +1,6 @@
 'use strict';
 // handles registration, logging in, and session authentication
-angular.module('login', ['resources.user'])
+angular.module('login', ['resources.user', 'den'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/login', {
@@ -12,7 +12,28 @@ angular.module('login', ['resources.user'])
         controller: 'RegisterCtrl'
       });
   }])
-  .controller('LoginCtrl', [ '$scope', function LoginCtrl($scope) { } ])
+  .controller('LoginCtrl', [ '$scope', '$http', '$location', function LoginCtrl($scope, $http, $location) {
+      $scope.form = {};
+      $scope.login = function() {
+          // authenticate the user and redirect to their den
+          var authenticatePromise = $http.post('/authenticate', $scope.form);
+          authenticatePromise.then(function(value) {
+                  if(value.data.error) {
+                      // error handler here
+                      console.log(value.data.error);
+                      $scope.form.password = '';
+                  }
+                  else {
+                      console.log('authenticated!');
+                      console.log(value);
+                      $location.path('/den');
+                  }
+              }, function(reason) {
+                  // error handler here
+                  console.log(reason);
+              });
+      }
+  } ])
   .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', function RegisterCtrl(User, $scope, $http, $location) {
       // variable will be filled with html elements using 'form.<element>'
       $scope.form = {};
@@ -27,7 +48,7 @@ angular.module('login', ['resources.user'])
           // validate form
           var usernameValidation = /^([a-zA-Z0-9_-]){3,32}$/;
           var emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-          var passwordValidation = /^[a-zA-Z0-9]{6,16}$/;
+          var passwordValidation = /^[a-zA-Z0-9!@$%^&-_]{6,16}$/;
           $scope.isUsernameValid = usernameValidation.test($scope.form.username);
           $scope.isEmailValid = emailValidation.test($scope.form.email);
           $scope.isPasswordValid = passwordValidation.test($scope.form.password) && passwordValidation.test($scope.form.confirmpwd);
@@ -53,14 +74,7 @@ angular.module('login', ['resources.user'])
                                       console.log(data.error);
                                     }
                                     else if(data.result) {
-                                      // authenticate the user and redirect to their den
-                                      $http.post('/authenticate', $scope.form)
-                                          .success(function(data) {
-                                              $location.path('/dashboard');
-                                          })
-                                          .error(function(err) {
-                                              console.log(err);
-                                          }); 
+                                      $location.path('/#/login');
                                     }
                                     else {
                                       // error handler here
@@ -71,6 +85,11 @@ angular.module('login', ['resources.user'])
                       }
                   }
               });
+          }
+          else {
+              // reset password fields
+              $scope.form.password = '';
+              $scope.form.confirmpwd = '';
           }
         };
   }]);

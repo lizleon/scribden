@@ -11,19 +11,25 @@ passport.use(new LocalStrategy(
         var userPromise = User.getScribdenUserByUsername(username);
         userPromise.then(function(value) {
             console.log('authenticating...');
-            if(!value) {
-                console.log('err username');
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            else if(value[0][2] != password) {
-                console.log('err password');
-                return done(null, false, { message: 'Incorrect password.' });
-            }
-            else {
-                console.log('authenticating...');
-                console.log(value[0][1]);
-                var user = { id: value[0][0], username: value[0][1], password: value[0][2] };
-                return done(null, user);
+            console.log(value);
+            try {
+                if(!value || (value && value.length == 0)) {
+                    console.log('err username');
+                    return done(null, false, { message: 'Incorrect username.' });
+                }
+                else if(value[0][2] != password) {
+                    console.log('err password');
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+                else {
+                    console.log('authenticating...');
+                    console.log(value[0][1]);
+                    var user = { id: value[0][0], username: value[0][1], password: value[0][2] };
+                    return done(null, user);
+                }
+            } catch(e) {
+                // error handling here
+                console.log(e);
             }
         }, function(reason) {
             // error handling here
@@ -34,7 +40,23 @@ passport.use(new LocalStrategy(
 ));
 
 exports.passport = passport;
-exports.authenticate = passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: '/register' });
+exports.authenticate = function(req, res, next) {
+    var Q = require('q');
+    var util = require('./util.js');
+    var deferred = Q.defer();
+    var fnAuthenticate = passport.authenticate('local', { failureRedirect: '/' }, function(req, res, err) {
+        if(res) {
+            console.log(res);
+            deferred.resolve(true);
+        }
+        else {
+            console.log(err);
+            deferred.reject(new Error(err));
+        }
+    });
+    fnAuthenticate(req, res, next);
+    util.initPromiseCallback(deferred.promise, res);
+};
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -68,5 +90,5 @@ app.get('/logout', function(req, res){
 //   login page.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+  res.redirect('/')
 }
