@@ -24,8 +24,6 @@ angular.module('login', ['resources.user', 'den'])
                       $scope.form.password = '';
                   }
                   else {
-                      console.log('authenticated!');
-                      console.log(value);
                       $location.path('/den');
                   }
               }, function(reason) {
@@ -60,7 +58,6 @@ angular.module('login', ['resources.user', 'den'])
               User.query({
                   path: 'name/' + $scope.form.username,
                   successCallback: function(data) {
-                      console.log(data);
                       if(data.result && data.result.length > 0) {
                           $scope.isUsernameAvailable = false;
                       }
@@ -74,7 +71,7 @@ angular.module('login', ['resources.user', 'den'])
                                       console.log(data.error);
                                     }
                                     else if(data.result) {
-                                      $location.path('/#/login');
+                                      $location.path('/login');
                                     }
                                     else {
                                       // error handler here

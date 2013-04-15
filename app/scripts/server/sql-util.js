@@ -25,12 +25,12 @@ exports.getSQLConnection = function() {
     conn.connect(function(error) {
         if (error != null) 
         {
+            // error handling here
             console.error('Received error', error);
             result.reject(new Error(error));
         } 
         else 
         {
-            console.log('Now connected, can start using');
             result.resolve(conn);
         }
     });

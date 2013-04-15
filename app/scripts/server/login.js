@@ -7,11 +7,8 @@ var passport = require('passport'),
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log('init password strategy for ' + username + '...');
         var userPromise = User.getScribdenUserByUsername(username);
         userPromise.then(function(value) {
-            console.log('authenticating...');
-            console.log(value);
             try {
                 if(!value || (value && value.length == 0)) {
                     console.log('err username');
@@ -22,17 +19,15 @@ passport.use(new LocalStrategy(
                     return done(null, false, { message: 'Incorrect password.' });
                 }
                 else {
-                    console.log('authenticating...');
-                    console.log(value[0][1]);
                     var user = { id: value[0][0], username: value[0][1], password: value[0][2] };
                     return done(null, user);
                 }
             } catch(e) {
-                // error handling here
+                // error handler here
                 console.log(e);
             }
         }, function(reason) {
-            // error handling here
+            // error handler here
             console.log(reason);
             return done(null, false, { message: reason });
         });
@@ -46,11 +41,9 @@ exports.authenticate = function(req, res, next) {
     var deferred = Q.defer();
     var fnAuthenticate = passport.authenticate('local', { failureRedirect: '/' }, function(req, res, err) {
         if(res) {
-            console.log(res);
             deferred.resolve(true);
         }
         else {
-            console.log(err);
             deferred.reject(new Error(err));
         }
     });

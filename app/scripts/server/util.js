@@ -28,7 +28,6 @@ exports.generalQuery = function(sqlStatement, params, values) {
             deferred.reject(new Error(err));
         })
         .on('row', function(row) {
-            console.log('data found!');
             resultRow = new Array();
             
             // results are returned as a buffer
@@ -42,11 +41,11 @@ exports.generalQuery = function(sqlStatement, params, values) {
         .on('done', function(response) {
             conn.end();
             if(response.isError) {
+                // error handler here
                 console.log('statement completed, insert failed...');
                 deferred.reject(new Error(err));
             }
             else {
-                console.log('success!');
                 deferred.resolve(result);
             }
         });
