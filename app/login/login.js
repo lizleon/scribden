@@ -22,22 +22,23 @@ angular.module('login', ['resources.user'])
       
       // register the user
       $scope.register = function() {
-          
+          /*
           User.query({
               path: 'name/' + $scope.form.username,
               successCallback: function(data) {
                   console.log(data);
               }
           });
-          /*
+          */
                       $http.post('/authenticate', $scope.form)
                           .success(function(data) {
+                              console.log('authenticated!');
                               $location.path('/dashboard');
-                              console.log('success');
                           })
                           .error(function(err) {
+                              console.log('error');
                               console.log(err);
-                          }); */
+                          });
           /*
           User.insert({
               data: $scope.form,

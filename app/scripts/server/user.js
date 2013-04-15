@@ -13,6 +13,21 @@ exports.getScribdenUserByUsername = function(username) {
         });
 }
 
+exports.getScribdenUserByIdProxy = function(req, res) {
+    var util = require('./util.js');
+    var deferred = exports.getScribdenUserById(req.params.id);
+    util.initPromiseCallback(deferred, res);
+}
+
+exports.getScribdenUserById = function(id) {
+    var util = require('./util.js');
+    return util.generalQuery('BEGIN EXEC SPGetScribdenUserById @ScribdenUserKey END', {
+            idParam: { type: 'Int' }
+        }, { 
+            idParam : id
+        });
+}
+
 exports.insertScribdenUserProxy = function(req, res) {
     var util = require('./util.js');
     var deferred = exports.insertScribdenUser(req.body.username, req.body.password);

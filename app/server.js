@@ -26,7 +26,7 @@ app.configure(function () {
 	app.use(express.bodyParser());
 	app.use(express.logger('dev'));  //tiny, short, default
     app.use(apiLogin.passport.initialize());
-    //app.use(apiLogin.passport.session());
+    app.use(apiLogin.passport.session());
 	app.use(app.router);
 	app.use(express.static(__dirname)); // routes the user to the home page
 	app.use(express.errorHandler({dumpExceptions: true, showStack: true, showMessage: true}));
@@ -34,6 +34,7 @@ app.configure(function () {
 
 app.post('/authenticate', apiLogin.authenticate);
 app.get(API_PATH + 'user/name/:username', apiUser.getScribdenUserByUsernameProxy);
+app.get(API_PATH + 'user/:id', apiUser.getScribdenUserByIdProxy);
 app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
 
 app.listen(port, function() {

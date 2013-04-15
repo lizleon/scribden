@@ -10,15 +10,20 @@ passport.use(new LocalStrategy(
         console.log('init password strategy for ' + username + '...');
         var userPromise = User.getScribdenUserByUsername(username);
         userPromise.then(function(value) {
-            console.log(value);
+            console.log('authenticating...');
             if(!value) {
+                console.log('err username');
                 return done(null, false, { message: 'Incorrect username.' });
             }
-            else if(response.password != password) {
+            else if(value[0][2] != password) {
+                console.log('err password');
                 return done(null, false, { message: 'Incorrect password.' });
             }
             else {
-                return done(null, value);
+                console.log('authenticating...');
+                console.log(value[0][1]);
+                var user = { id: value[0][0], username: value[0][1], password: value[0][2] };
+                return done(null, user);
             }
         }, function(reason) {
             // error handling here
@@ -29,11 +34,25 @@ passport.use(new LocalStrategy(
 ));
 
 exports.passport = passport;
-exports.authenticate = passport.authenticate('local', { successRedirect: '/dashboard',
-                                    failureRedirect: '/login' },
-                                    function(req, res) {
-                                        res.redirect('/');
-                                    });
+exports.authenticate = passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: '/register' });
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    var deferred = User.getScribdenUserById(id)
+    deferred.then(function (value) {
+        done(null, value);
+    }, function(reason) {
+        done(reason, null);
+    });
+});
 
 /*
 app.get('/logout', function(req, res){
