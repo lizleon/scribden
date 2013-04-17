@@ -32,10 +32,18 @@ app.configure(function () {
 	app.use(express.errorHandler({dumpExceptions: true, showStack: true, showMessage: true}));
 });
 
+// user authentication
 app.post('/authenticate', apiLogin.authenticate);
+
+// scribden user
 app.get(API_PATH + 'user/name/:username', apiUser.getScribdenUserByUsernameProxy);
 app.get(API_PATH + 'user/:id', apiUser.getScribdenUserByIdProxy);
 app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
+
+// common room
+app.get(API_PATH + 'commonroom/userid/:userid', apiUser.getCommonRoomByScribdenUserProxy);
+app.post(API_PATH + 'commonroom', apiUser.insertCommonRoomProxy);
+
 
 app.listen(port, function() {
     console.log("Listening on " + port);

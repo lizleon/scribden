@@ -22,8 +22,14 @@ CREATE PROCEDURE [dbo].[SPGetScribdenUserById]
 
 AS
 
-SELECT * 
+SELECT  ScribdenUserKey,
+		Username,
+		Password,
+		Email,
+		Active,
+		ModDate
 FROM ScribdenUser 
 WHERE ScribdenUserKey = @ScribdenUserKey
+	AND Active = 1
 
 GO
