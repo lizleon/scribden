@@ -1,6 +1,6 @@
 'use strict';
-// handles registration, logging in, and session authentication
-angular.module('den', [])
+
+angular.module('den', ['den.manage-common-rooms'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/den', {

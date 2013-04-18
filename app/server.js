@@ -20,11 +20,15 @@ var express = require('express'),
 apiLogin = require('./scripts/server/login.js');
 // handles user data
 apiUser = require('./scripts/server/user.js');
+// handles common room data
+apiCommonRoom = require('./scripts/server/common-room.js');
 
 app.configure(function () {
 	app.use(express.favicon());
 	app.use(express.bodyParser());
 	app.use(express.logger('dev'));  //tiny, short, default
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: '31206tokoshinchrongraw543788' }));
     app.use(apiLogin.passport.initialize());
     app.use(apiLogin.passport.session());
 	app.use(app.router);
@@ -41,8 +45,8 @@ app.get(API_PATH + 'user/:id', apiUser.getScribdenUserByIdProxy);
 app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
 
 // common room
-app.get(API_PATH + 'commonroom/userid/:userid', apiUser.getCommonRoomByScribdenUserProxy);
-app.post(API_PATH + 'commonroom', apiUser.insertCommonRoomProxy);
+app.get(API_PATH + 'common-room/userid/:userid', apiCommonRoom.getCommonRoomsByScribdenUserProxy);
+app.post(API_PATH + 'common-room', apiCommonRoom.insertCommonRoomProxy);
 
 
 app.listen(port, function() {

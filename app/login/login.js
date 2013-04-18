@@ -12,7 +12,7 @@ angular.module('login', ['resources.user', 'den'])
         controller: 'RegisterCtrl'
       });
   }])
-  .controller('LoginCtrl', [ '$scope', '$http', '$location', function LoginCtrl($scope, $http, $location) {
+  .controller('LoginCtrl', [ '$scope', '$http', '$location', '$rootScope', function LoginCtrl($scope, $http, $location, $rootScope) {
       $scope.form = {};
       $scope.login = function() {
           // authenticate the user and redirect to their den
@@ -24,6 +24,8 @@ angular.module('login', ['resources.user', 'den'])
                       $scope.form.password = '';
                   }
                   else {
+                      // save the user's id for the duration of the session
+                      $rootScope.user_id = value.data.result;
                       $location.path('/den');
                   }
               }, function(reason) {
@@ -32,7 +34,7 @@ angular.module('login', ['resources.user', 'den'])
               });
       }
   } ])
-  .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', function RegisterCtrl(User, $scope, $http, $location) {
+  .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', '$rootScope', function RegisterCtrl(User, $scope, $http, $location, $rootScope) {
       // variable will be filled with html elements using 'form.<element>'
       $scope.form = {};
       $scope.isUsernameValid = true;
