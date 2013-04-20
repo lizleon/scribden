@@ -13,7 +13,7 @@ GO
 Author: Jonathan S. Collins Leon
 Desc: Gets all of the common rooms that the user is a member or a moderator of
 Modified: 04/17/2013
-Exec: EXEC SPGetCommonRoomsByScribdenUser 2
+Exec: EXEC SPGetCommonRoomsByScribdenUser 4
 
 ********************************************************************************/
 
@@ -37,6 +37,7 @@ INNER JOIN Members M
 WHERE 
 	(CR.fScribdenUserKey = @ScribdenUserKey		-- user is the moderator
 	OR M.fScribdenUserKey = @ScribdenUserKey)	-- or a member
+	AND M.Approved = 1							-- approved by a moderator
 	AND CR.Active = 1							-- common room is currently active
 	AND M.Active = 1							-- entry is valid
 

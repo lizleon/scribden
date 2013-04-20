@@ -1,6 +1,6 @@
 'use strict';
 // handles registration, logging in, and session authentication
-angular.module('login', ['resources.user', 'den'])
+angular.module('login', ['resources.user', 'den', 'ngCookies'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/login', {
@@ -12,7 +12,7 @@ angular.module('login', ['resources.user', 'den'])
         controller: 'RegisterCtrl'
       });
   }])
-  .controller('LoginCtrl', [ '$scope', '$http', '$location', '$rootScope', function LoginCtrl($scope, $http, $location, $rootScope) {
+  .controller('LoginCtrl', [ '$scope', '$http', '$location', '$cookieStore', function LoginCtrl($scope, $http, $location, $cookieStore) {
       $scope.form = {};
       $scope.login = function() {
           // authenticate the user and redirect to their den
@@ -25,7 +25,7 @@ angular.module('login', ['resources.user', 'den'])
                   }
                   else {
                       // save the user's id for the duration of the session
-                      $rootScope.user_id = value.data.result;
+                      $cookieStore.put('user_id', value.data.result);
                       $location.path('/den');
                   }
               }, function(reason) {
@@ -34,7 +34,7 @@ angular.module('login', ['resources.user', 'den'])
               });
       }
   } ])
-  .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', '$rootScope', function RegisterCtrl(User, $scope, $http, $location, $rootScope) {
+  .controller('RegisterCtrl', [ 'User', '$scope', '$http', '$location', function RegisterCtrl(User, $scope, $http, $location) {
       // variable will be filled with html elements using 'form.<element>'
       $scope.form = {};
       $scope.isUsernameValid = true;
