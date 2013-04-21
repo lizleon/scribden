@@ -79,8 +79,9 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies',
       };
       
       $scope.editCommonRoom = function(data) {
-          if(!data) {
+          if(!data[0]) {
             $rootScope.newCommonRoom = true;
+            $rootScope.editingCommonRoom = undefined;
           }
           else {
             $rootScope.newCommonRoom = false;
@@ -88,25 +89,25 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies',
           }
           
           $rootScope.dialog = $dialog.dialog($scope.opts);
-          $rootScope.dialog.open().then(function(result){
-              if(result)
-              {
-                console.log(result);
-              }
-          });
+          $rootScope.dialog.open();
       }
   }])
   .controller('EditCommonRoomModal', ['$scope', '$dialog', '$rootScope', function EditCommonRoomModal($scope, $dialog, $rootScope) {
       $scope.editingCommonRoom = $rootScope.editingCommonRoom;
       $scope.form = {};
       
+      $scope.form.isPublic = true;
       if($rootScope.editingCommonRoom) {
           $scope.form.commonRoomKey = $rootScope.editingCommonRoom[0];
           $scope.form.name = $rootScope.editingCommonRoom[1];
           $scope.form.description = $rootScope.editingCommonRoom[2];
-          $scope.form.isPublic = $rootScope.editingCommonRoom[4];
           $scope.form.banner = $rootScope.editingCommonRoom[5];
           $scope.form.homeBG = $rootScope.editingCommonRoom[6];
+          
+          if($rootScope.editingCommonRoom[4])
+              $scope.form.isPublic = true;
+          else
+              $scope.form.isPublic = false;
       }
       
       $scope.close = function() {

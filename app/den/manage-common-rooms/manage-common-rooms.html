@@ -13,9 +13,7 @@
             <div class="tab-pane active" ng-class="{ active: isModerator }" id="tab1">
                 <div ng-repeat="commonRoom in commonRooms">
                     <button ng-hide="commonRoom[0]" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
-                    <div ng-show="commonRoom[0] && (commonRoom[3] == userid)">
-                        <span>{{ commonRoom[1] }}</span>
-                    </div>
+                    <button ng-show="commonRoom[0] && (commonRoom[3] == userid)" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">{{ commonRoom[1] }}</button>
                 </div>
             </div>
             <div class="tab-pane" ng-class="{ active: !isModerator }" id="tab2">
