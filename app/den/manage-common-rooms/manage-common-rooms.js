@@ -1,6 +1,6 @@
 'use strict';
 // handles registration, logging in, and session authentication
-angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies'])
+angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies', 'ui.bootstrap'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/den/manage-common-rooms', {
@@ -8,9 +8,11 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies']
         controller: 'ManageCommonRoomsCtrl'
       })
   }])
-  .controller('ManageCommonRoomsCtrl', ['CommonRoom', '$scope', '$cookieStore', '$rootScope', function ManageCommonRoomsCtrl(CommonRoom, $scope, $cookieStore, $rootScope) {
+  .controller('ManageCommonRoomsCtrl', ['CommonRoom', '$scope', '$cookieStore', '$rootScope', '$dialog', function ManageCommonRoomsCtrl(CommonRoom, $scope, $cookieStore, $rootScope, $dialog) {
       $scope.commonRooms = {};
       $scope.moderatorFilter = '';
+      $scope.userid = $cookieStore.get('user_id');
+      $scope.isModerator = true;
       console.log($cookieStore.get('user_id'));
       console.log('querying common rooms...');
       CommonRoom.query({
@@ -50,12 +52,30 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies']
           }
       });
       
+      $scope.opts = {
+        backdrop: true,
+        keyboard: true,
+        backdropClick: true,
+        templateUrl:  'den/manage-common-rooms/edit-common-room-modal.html',
+        controller: 'EditCommonRoomModal'
+      };
+    
+      $scope.openDialog = function(){
+        var d = $dialog.dialog($scope.opts);
+        d.open().then(function(result){
+          if(result)
+          {
+            console.log(result);
+          }
+        });
+      };
+      
       $scope.showModeratedCommonRooms = function() {
-          $scope.moderatorFilter = $cookieStore.get('user_id');
+          $scope.isModerator = true;
       };
       
       $scope.showParticipatedCommonRooms = function() {
-          $scope.moderatorFilter = '';
+          $scope.isModerator = false;
       };
       
       $scope.editCommonRoom = function(data) {
@@ -66,9 +86,17 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies']
             $rootScope.newCommonRoom = false;
             $rootScope.editingCommonRoom = data;
           }
+          
+          $rootScope.dialog = $dialog.dialog($scope.opts);
+          $rootScope.dialog.open().then(function(result){
+              if(result)
+              {
+                console.log(result);
+              }
+          });
       }
   }])
-  .controller('EditCommonRoomModal', ['CommonRoom', '$scope', '$http', '$location', '$rootScope', function EditCommonRoomModal(CommonRoom, $scope, $http, $location, $rootScope) {
+  .controller('EditCommonRoomModal', ['$scope', '$dialog', '$rootScope', function EditCommonRoomModal($scope, $dialog, $rootScope) {
       $scope.editingCommonRoom = $rootScope.editingCommonRoom;
       $scope.form = {};
       
@@ -81,6 +109,9 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies']
           $scope.form.homeBG = $rootScope.editingCommonRoom[6];
       }
       
+      $scope.close = function() {
+          $rootScope.dialog.close();
+      }
       // @TODO: update common room stored proc/server logic
       $scope.save = function() {
           if($rootScope.newCommonRoom) {

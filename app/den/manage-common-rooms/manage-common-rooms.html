@@ -1,9 +1,30 @@
 <div class="center hero-unit" ng-controller="ManageCommonRoomsCtrl">
     <li ng-hide="commonRooms.length">No common rooms</li>
-    <div ng-repeat="commonRoom in commonRooms">
-        <a ng-hide="commonRoom[0]" href="#edit-common-room-modal" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</a>
-        <div ng-show="commonRoom[0]">
-            <span>{{ commonRoom[1] }}</span>
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a ng-click="showModeratedCommonRooms()" data-toggle="tab">Moderated</a>
+            </li>
+            <li>
+                <a ng-click="showParticipatedCommonRooms()" data-toggle="tab">Participating</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" ng-class="{ active: isModerator }" id="tab1">
+                <div ng-repeat="commonRoom in commonRooms">
+                    <button ng-hide="commonRoom[0]" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
+                    <div ng-show="commonRoom[0] && (commonRoom[3] == userid)">
+                        <span>{{ commonRoom[1] }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" ng-class="{ active: !isModerator }" id="tab2">
+                <div ng-repeat="commonRoom in commonRooms">
+                    <div ng-show="commonRoom[0] && (commonRoom[3] != userid)">
+                        <span>{{ commonRoom[1] }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
