@@ -46,13 +46,13 @@ angular.module('login', ['resources.user', 'den', 'ngCookies'])
       // register the user
       $scope.register = function() {
           // validate form
-          var usernameValidation = /^([a-zA-Z0-9_-]){3,32}$/;
-          var emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-          var passwordValidation = /^[a-zA-Z0-9!@$%^&-_]{6,16}$/;
+          var usernameValidation = /^(?!undefined)[a-zA-Z0-9_\-]{3,32}$/;
+          var emailValidation = /^(?!undefined)[a-zA-Z0-9._\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}$/;
+          var passwordValidation = /^(?!undefined)[a-zA-Z0-9!@\$%\^&\-_]{6,16}$/;
           $scope.isUsernameValid = usernameValidation.test($scope.form.username);
           $scope.isEmailValid = emailValidation.test($scope.form.email);
           $scope.isPasswordValid = passwordValidation.test($scope.form.password) && passwordValidation.test($scope.form.confirmpwd);
-          $scope.isPasswordMatched = $scope.form.password == $scope.form.confirmpwd;
+          $scope.isPasswordMatched = $scope.form.password === $scope.form.confirmpwd;
           
           // check form validity
           if($scope.isUsernameValid && $scope.isEmailValid && $scope.isPasswordValid && $scope.isPasswordMatched) {

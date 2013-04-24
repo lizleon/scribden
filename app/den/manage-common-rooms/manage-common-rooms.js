@@ -1,6 +1,6 @@
 'use strict';
 // handles registration, logging in, and session authentication
-angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies', 'ui.bootstrap'])
+angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.image-handler', 'ngCookies', 'ui.bootstrap', 'ur.file'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/den/manage-common-rooms', {
@@ -92,9 +92,11 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies',
           $rootScope.dialog.open();
       }
   }])
-  .controller('EditCommonRoomModal', ['$scope', '$dialog', '$rootScope', function EditCommonRoomModal($scope, $dialog, $rootScope) {
+  .controller('EditCommonRoomModal', ['ImageHandler', '$scope', '$dialog', '$rootScope', 'BANNER_REQS', 'HOMEBG_REQS', function EditCommonRoomModal(ImageHandler, $scope, $dialog, $rootScope, BANNER_REQS, HOMEBG_REQS) {
       $scope.editingCommonRoom = $rootScope.editingCommonRoom;
       $scope.form = {};
+      $scope.bannerReqs = BANNER_REQS;
+      $scope.homeBGReqs = HOMEBG_REQS;
       
       $scope.form.isPublic = true;
       if($rootScope.editingCommonRoom) {
@@ -110,16 +112,96 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'ngCookies',
               $scope.form.isPublic = false;
       }
       
+      $scope.isNameValid = true;
+      $scope.isDescriptionValid = true;
+      $scope.isBannerDimensionsValid = true;
+      $scope.isBannerFileValid = true;
+      $scope.isHomeBGDimensionsValid = true;
+      $scope.isHomeBGFileValid = true;
+      
       $scope.close = function() {
           $rootScope.dialog.close();
       }
       // @TODO: update common room stored proc/server logic
       $scope.save = function() {
-          if($rootScope.newCommonRoom) {
-              console.log('CommonRoom.insert');
+          var textValidation = /^(?!undefined)[a-zA-Z0-9!@\$%\^&\-_ ]+$/;
+          $scope.isNameValid = textValidation.test($scope.form.name);
+          $scope.isDescriptionValid = textValidation.test($scope.form.description);
+          $scope.bannerLoaded = false;
+          $scope.homebgLoaded = false;
+          
+          if($scope.form.banner) {
+              $scope.bannerLoaded = false;
+              ImageHandler.validate($scope.form.banner, BANNER_REQS.width, BANNER_REQS.height, 1048576).then(function(value) {
+                  $scope.isBannerFileValid = true;
+                  $scope.isBannerDimensionsValid = value;
+                  $scope.bannerLoaded = true;
+                  $scope.$apply();
+              }, function(reason) {
+                  // error handler here
+                  console.log(reason);
+                  $scope.isBannerFileValid = false;
+                  $scope.$apply();
+              });
           }
           else {
-              console.log('CommonRoom.update');
+              $scope.isBannerDimensionsValid = true;
+              $scope.isBannerFileValid = true;
+              $scope.bannerLoaded = true;
+          }
+          
+          if($scope.form.homeBG) {
+              $scope.homebgLoaded = false;
+              ImageHandler.validate($scope.form.homeBG, HOMEBG_REQS.width, HOMEBG_REQS.height, 2097152).then(function(value) {
+                  $scope.isHomeBGFileValid = true;
+                  $scope.isHomeBGDimensionsValid = value;
+                  $scope.homebgLoaded = true;
+                  $scope.$apply();
+              }, function(reason) {
+                  // error handler here
+                  console.log(reason);
+                  $scope.isHomeBGFileValid = false;
+                  $scope.$apply();
+              });
+          }
+          else {
+              $scope.isHomeBGFileValid = true;
+              $scope.isHomeBGDimensionsValid = true;
+              $scope.homebgLoaded = true;
+          }
+          
+          $scope.$watch('bannerLoaded', function(newValue, oldValue) {
+              if(newValue)
+                  $scope.finalizeSave();
+          });
+          
+          $scope.$watch('homebgLoaded', function(newValue, oldValue) {
+              if(newValue)
+                  $scope.finalizeSave();
+          });
+          
+          $scope.finalizeSave();
+      }
+      
+      $scope.finalizeSave = function() {
+          if($scope.isNameValid && $scope.isDescriptionValid && $scope.isBannerFileValid && $scope.isBannerDimensionsValid && $scope.isHomeBGFileValid && $scope.isHomeBGDimensionsValid && $scope.bannerLoaded && $scope.homebgLoaded) {
+              if($rootScope.newCommonRoom) {
+                  console.log('CommonRoom.insert');
+              }
+              else {
+                  console.log('CommonRoom.update');
+              }
+          }
+          else {
+              console.log('errors found');
           }
       }
-  }]);
+  }])
+  .constant('BANNER_REQS', {
+        width: 250,
+        height: 90
+  })
+  .constant('HOMEBG_REQS', {
+        width: 600,
+        height: 600
+  });

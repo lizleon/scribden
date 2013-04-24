@@ -4,37 +4,45 @@
         <h3 ng-show="newCommonRoom">Create New Common Room</h3>
         <h3 ng-hide="newCommonRoom">Edit Common Room: {{ form.name }}</h3>
     </div>
-    <form class="form-horizontal">
+    <form class="form-horizontal" ng-submit="save()">
         <div class="modal-body">
             <div class="control-group">
                 <label class="control-label">Name:</label>
                 <div class="controls">
-                    <input type="text" ng-model="form.name" placeholder="Name" />
+                    <input type="text" ng-model="form.name" placeholder="Name" maxlength="255" ng-required />
+                    <br ng-hide="isNameValid" />
+                    <span id="nameError" ng-hide="isNameValid" class="alert alert-error">Required field. Not all symbols are supported.</span>
                 </div>
                 <label class="control-label">Description:</label>
                 <div class="controls">
-                    <input type="text" ng-model="form.description" placeholder="Description" />
+                    <input type="text" ng-model="form.description" placeholder="Description" maxlength="255" ng-required />
+                    <br ng-hide="isDescriptionValid" />
+                    <span id="descriptionError" ng-hide="isDescriptionValid" class="alert alert-error">Required field. Not all symbols are supported.</span>
                 </div>
                 <label class="control-label"></label>
                 <div class="btn-group controls" data-toggle="buttons-checkbox">
                     <button type="button" class="btn btn-primary" ng-model="form.isPublic" btn-radio="true">Public</button>
                     <button type="button" class="btn btn-primary" ng-model="form.isPublic" btn-radio="false">Private</button>
                 </div>
-                <label class="control-label">Banner:</label>
+                <label class="control-label">Banner ({{ bannerReqs.width }}x{{ bannerReqs.height }}px):</label>
                 <div class="controls">
-                    <input type="text" ng-model="form.banner" placeholder="http://" />
-                    <button type="button" class="btn">Browse...</button>
+                    <input type="file" ur-file="form.banner" accept="image/x-MS-bmp,image/x-png,image/tiff,image/jpeg"/>
+                    <br ng-hide="isBannerDimensionsValid || isBannerFileValid" />
+                    <span id="bannerFileError" ng-hide="isBannerFileValid" class="alert alert-error">File must be a *.bmp, *.png, *.jpeg, or *.tiff under 1 MB.</span>
+                    <span id="bannerDimensionError" ng-hide="isBannerDimensionsValid" class="alert alert-error">Image must have dimensions {{ bannerReqs.width }}x{{ bannerReqs.height }}px.</span>
                 </div>
-                <label class="control-label">Home Page Background:</label>
+                <label class="control-label">Home Page Background ({{ homeBGReqs.width }}x{{ homeBGReqs.height }}px):</label>
                 <div class="controls">
-                    <input type="text" ng-model="form.homeBG" placeholder="http://" />
-                    <button type="button" class="btn">Browse...</button>
+                    <input type="file" ur-file="form.homeBG" accept="image/x-MS-bmp,image/x-png,image/tiff,image/jpeg"/>
+                    <br ng-hide="isHomeBGDimensionsValid || isHomeBGFileValid" />
+                    <span id="homebgFileError" ng-hide="isHomeBGFileValid" class="alert alert-error">File must be a *.bmp, *.png, *.jpeg, or *.tiff under 2 MB.</span>
+                    <span id="homebgDimensionError" ng-hide="isHomeBGDimensionsValid" class="alert alert-error">Image must have dimensions {{ homeBGReqs.width }}x{{ homeBGReqs.height }}px.</span>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn pull-left" data-dismiss="modal" ng-click="close()">Cancel</button>
-            <button type="submit" class="btn btn-primary" ng-disabled="incomplete" data-dismiss="modal" ng-click="save()">
+            <button type="submit" class="btn btn-primary" ng-disabled="incomplete" data-dismiss="modal">
                 Save Changes
             </button>
         </div>
