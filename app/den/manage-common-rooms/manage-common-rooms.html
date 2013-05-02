@@ -3,17 +3,17 @@
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a ng-click="showModeratedCommonRooms()" data-toggle="tab">Moderated</a>
+                <a id="moderatedTab" ng-click="showModeratedCommonRooms()" data-toggle="tab">Moderated</a>
             </li>
             <li>
-                <a ng-click="showParticipatedCommonRooms()" data-toggle="tab">Participating</a>
+                <a id="participatingTab" ng-click="showParticipatedCommonRooms()" data-toggle="tab">Participating</a>
             </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" ng-class="{ active: isModerator }" id="tab1">
                 <div ng-repeat="commonRoom in commonRooms">
-                    <button ng-hide="commonRoom[0]" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
-                    <button ng-show="commonRoom[0] && (commonRoom[3] == userid)" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">{{ commonRoom[1] }}</button>
+                    <button id="createNewBtn" ng-hide="commonRoom[0]" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
+                    <button id="updateBtn" ng-show="commonRoom[0] && (commonRoom[3] == userid)" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">{{ commonRoom[1] }}</button>
                 </div>
             </div>
             <div class="tab-pane" ng-class="{ active: !isModerator }" id="tab2">

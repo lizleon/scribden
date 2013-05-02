@@ -16,13 +16,16 @@ exports.getCommonRoomsByScribdenUser = function(userid) {
 
 exports.insertCommonRoomProxy = function(req, res) {
     var util = require('./util.js');
-    var promise = exports.insertCommonRoom(req.params.name, req.params.description, req.params.userid, req.params.isPublic, req.params.banner, req.params.homeBG);
+    var promise = exports.insertCommonRoom(req.body.name, req.body.description, req.body.isPublic, req.body.bannerURL, req.body.homeBGURL);
     util.initPromiseCallback(promise, res);
 }
 
 exports.insertCommonRoom = function(name, description, userid, isPublic, banner, homeBG) {
     var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPInsertCommonRoom @nameParam, @descriptionParam, @useridParam, @isPublicParam, @bannerParam, @homeBGParam END', {
+    var members = require('./members.js');
+    var Q = require('q');
+    var deferred = Q.defer();
+    var cPromise = util.generalQuery('BEGIN EXEC SPInsertCommonRoom @nameParam, @descriptionParam, @isPublicParam, @bannerParam, @homeBGParam END', {
             nameParam: { type: 'VarChar', size: 255 },
             descriptionParam: { type: 'VarChar', size: 255 },
             useridParam: { type: 'Int' },
@@ -37,4 +40,18 @@ exports.insertCommonRoom = function(name, description, userid, isPublic, banner,
             bannerParam: banner,
             homeBGParam: homeBG
         });
+    cPromise.then(function(value) {
+        var listUserStatuses = require('./list-user-status.js');
+        var mPromise = members.insertMember(userid, listUserStatuses.ACTIVE, value[0], 1, 1);
+        
+        mPromise.then(function(value) {
+            deferred.resolve(true);
+        }, function(reason) {
+            deferred.reject(new Error(reason)); 
+        });
+    }, function(reason) {
+        deferred.reject(new Error(reason));
+    });
+        
+    return deferred.promise;
 }

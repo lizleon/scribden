@@ -1,5 +1,5 @@
 'use strict';
-angular.module('resources.image-handler', ['resources.scribden-resource']).factory('ImageHandler', ['ScribdenResource', function (ScribdenResource) {
+angular.module('resources.image-handler', ['resources.scribden-resource']).factory('ImageHandler', ['ScribdenResource', 'API_PATH', function (ScribdenResource, API_PATH) {
 
     var ImageHandler = ScribdenResource('image-handler');
     
@@ -45,6 +45,33 @@ angular.module('resources.image-handler', ['resources.scribden-resource']).facto
         }
         
         return deferred.promise;
+    }
+    
+    ImageHandler.uploadFile = function(fileID, fileName) {
+        var deferred = Q.defer();
+        
+        var s3upload = new S3Upload({
+            s3_object_name: fileName,
+            file_dom_selector: '#' + fileID,
+            s3_sign_put_url: API_PATH.baseURL + 'signS3put',
+            onProgress: function(percent, message) { // Use this for live upload progress bars
+                console.log('Upload progress: ', percent, message);
+            },
+            onFinishS3Put: function(public_url) { // Get the URL of the uploaded file
+                console.log('Upload finished: ', public_url);
+                deferred.resolve(public_url);
+            },
+            onError: function(status) {
+                console.log('Upload error: ', status);
+                deferred.reject(new Error(status));
+            }
+        });
+        
+        return deferred.promise;
+    }
+    
+    ImageHandler.generateFileName = function(fileName, userid) {
+        return md5(Date.now() + userid + (Math.random() * 1000) + fileName);
     }
 
     return ImageHandler;

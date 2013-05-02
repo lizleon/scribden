@@ -1,9 +1,63 @@
-
 /***********************************
 Author: Jonathan S. Collins Leon
-Desc: Creates the CommonRoom table
-Modified: 04/15/2013
+Desc: Creates the Common Room, Members, and ListUserStatus tables
+Modified: 04/17/2013
 ************************************/
+
+/********************************** Remove Constraints and drop table Members ********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_Members_MembersKey]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_MembersKey]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]') AND type = 'F')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]') AND type = 'F')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_isModerator]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_isModerator]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_Active]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_Active]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_ModDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_ModDate]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Members]') AND type in (N'U'))
+DROP TABLE [dbo].[Members]
+GO
 
 /********************************** Remove Constraints and drop table CommonRoom ********************************************/
 
@@ -14,9 +68,9 @@ END
 
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_CommonRoom_fScribdenUserKey]') AND type = 'D')
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
 BEGIN
-ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [PK_CommonRoom_fScribdenUserKey]
+ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
 END
 
 GO
@@ -38,6 +92,35 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CommonRoom]') AND type in (N'U'))
 DROP TABLE [dbo].[CommonRoom]
 GO
+
+
+/********************************** Remove Constraints and drop table ListUserStatus ********************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_ListUserStatus_ListUserStatusKey]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [PK_ListUserStatus_ListUserStatusKey]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_Active]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_Active]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_ModDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_ModDate]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ListUserStatus]') AND type in (N'U'))
+DROP TABLE [dbo].[ListUserStatus]
+GO
+
 
 /********** Create CommonRoom Table ************/
 
@@ -68,6 +151,9 @@ CREATE TABLE [dbo].[CommonRoom](
 
 GO
 
+SET ANSI_PADDING OFF
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[CommonRoom]'))
 
 BEGIN
@@ -78,49 +164,12 @@ END
 
 GO
 
-SET ANSI_PADDING OFF
-GO
-
 ALTER TABLE [dbo].[CommonRoom] ADD CONSTRAINT [DF_CommonRoom_Active] DEFAULT ((1)) FOR [Active]
 GO
 
 ALTER TABLE [dbo].[CommonRoom] ADD CONSTRAINT [DF_CommonRoom_ModDate] DEFAULT (getdate()) FOR [ModDate]
 GO
 
-
-
-/***********************************
-Author: Jonathan S. Collins Leon
-Desc: Creates the ListUserStatus table
-Modified: 04/17/2013
-************************************/
-
-/********************************** Remove Constraints and drop table ListUserStatus ********************************************/
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_ListUserStatus_ListUserStatusKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [PK_ListUserStatus_ListUserStatusKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ListUserStatus]') AND type in (N'U'))
-DROP TABLE [dbo].[ListUserStatus]
-GO
 
 /********** Create ListUserStatus Table ************/
 
@@ -156,61 +205,6 @@ ALTER TABLE [dbo].[ListUserStatus] ADD CONSTRAINT [DF_ListUserStatus_ModDate] DE
 GO
 
 
-
-/***********************************
-Author: Jonathan S. Collins Leon
-Desc: Creates the Members table
-Modified: 04/17/2013
-************************************/
-
-/********************************** Remove Constraints and drop table Members ********************************************/
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_Members_MembersKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_MembersKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fScribdenUserKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_fScribdenUserKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fListUserStatusKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_fListUserStatusKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fCommonRoomKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_fCommonRoomKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Members]') AND type in (N'U'))
-DROP TABLE [dbo].[Members]
-GO
-
 /********** Create Members Table ************/
 
 SET ANSI_NULLS ON
@@ -228,6 +222,7 @@ CREATE TABLE [dbo].[Members](
 [fListUserStatusKey] [int] NOT NULL,
 [fCommonRoomKey] [int] NOT NULL,
 [Approved] [bit] NOT NULL,
+[isModerator] [bit] NOT NULL,
 [Active] [bit] NOT NULL,
 [ModDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Members_MembersKey] PRIMARY KEY CLUSTERED
@@ -274,8 +269,12 @@ GO
 ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_Approved] DEFAULT ((0)) FOR [Approved]
 GO
 
+ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_isModerator] DEFAULT ((0)) FOR [isModerator]
+GO
+
 ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_Active] DEFAULT ((1)) FOR [Active]
 GO
 
 ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_ModDate] DEFAULT (getdate()) FOR [ModDate]
 GO
+
