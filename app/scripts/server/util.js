@@ -65,7 +65,7 @@ exports.uploadFile = function(req, res) {
     var hmac = require('../../lib/awsquerysigner/jssha256.js');
     var objectName = req.params.s3objectname;
     var mimeType = req.params.s3objecttype;
-    var expires = (Date.now() / 1000) + 100; // PUT request to S3 must start within 100 seconds
+    var expires = Math.round((Date.now() / 1000) + 100); // PUT request to S3 must start within 100 seconds
     
     var amzHeaders = 'x-amz-acl:public-read'; // set the public read permission on the uploaded file
     var stringToSign = 'PUT\n\nimage/' + mimeType + '\n' + expires + '\n' + amzHeaders + '\n/' + s3BucketName + '/' + objectName;
