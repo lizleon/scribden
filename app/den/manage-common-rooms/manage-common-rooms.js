@@ -92,7 +92,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
           $rootScope.dialog.open();
       }
   }])
-  .controller('EditCommonRoomModal', ['ImageHandler', '$scope', '$dialog', '$rootScope', '$cookieStore', 'BANNER_REQS', 'HOMEBG_REQS', function EditCommonRoomModal(ImageHandler, $scope, $dialog, $rootScope, $cookieStore, BANNER_REQS, HOMEBG_REQS) {
+  .controller('EditCommonRoomModal', ['CommonRoom', 'ImageHandler', '$scope', '$dialog', '$rootScope', '$cookieStore', 'BANNER_REQS', 'HOMEBG_REQS', function EditCommonRoomModal(CommonRoom, ImageHandler, $scope, $dialog, $rootScope, $cookieStore, BANNER_REQS, HOMEBG_REQS) {
       $scope.editingCommonRoom = $rootScope.editingCommonRoom;
       $scope.form = {};
       $scope.bannerReqs = BANNER_REQS;
@@ -135,7 +135,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               ImageHandler.validate($scope.form.banner, BANNER_REQS.width, BANNER_REQS.height, 1048576).then(function(value) {
                   $scope.isBannerFileValid = true;
                   $scope.isBannerDimensionsValid = value;
-                  $scope.bannerLoaded = $scope.form.banner.name;
+                  $scope.bannerFileName = $scope.form.banner.name;
                   $scope.$apply();
               }, function(reason) {
                   // error handler here
@@ -155,7 +155,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               ImageHandler.validate($scope.form.homeBG, HOMEBG_REQS.width, HOMEBG_REQS.height, 2097152).then(function(value) {
                   $scope.isHomeBGFileValid = true;
                   $scope.isHomeBGDimensionsValid = value;
-                  $scope.homebgLoaded = $scope.form.homeBG.name;
+                  $scope.homebgFileName = $scope.form.homeBG.name;
                   $scope.$apply();
               }, function(reason) {
                   // error handler here
@@ -170,7 +170,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               $scope.homebgLoaded = true;
           }
           
-          $scope.$watch('bannerLoaded', function(newValue, oldValue) {
+          $scope.$watch('bannerFileName', function(newValue, oldValue) {
               if(typeof newValue == 'string') {
                   // upload file
                   var fileName = ImageHandler.generateFileName(newValue, $cookieStore.get('user_id'));
@@ -178,6 +178,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   uploadPromise.then(function(value) {
                       console.log('banner uploaded to ' + value);
                       $scope.form.bannerURL = value;
+                      $scope.bannerLoaded = true;
                       $scope.finalizeSave();
                   }, function(reason) {
                       // error handler here
@@ -186,7 +187,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               }
           });
           
-          $scope.$watch('homebgLoaded', function(newValue, oldValue) {
+          $scope.$watch('homebgFileName', function(newValue, oldValue) {
               if(typeof newValue == 'string') {
                   // upload file
                   var fileName = ImageHandler.generateFileName(newValue, $cookieStore.get('user_id'));
@@ -194,6 +195,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   uploadPromise.then(function(value) {
                       console.log('homebg uploaded to ' + value);
                       $scope.form.homeBGURL = value;
+                      $scope.homebgLoaded = true;
                       $scope.finalizeSave();
                   }, function(reason) {
                       // error handler here

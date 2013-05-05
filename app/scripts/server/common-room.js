@@ -16,11 +16,11 @@ exports.getCommonRoomsByScribdenUser = function(userid) {
 
 exports.insertCommonRoomProxy = function(req, res) {
     var util = require('./util.js');
-    var promise = exports.insertCommonRoom(req.body.name, req.body.description, req.body.isPublic, req.body.bannerURL, req.body.homeBGURL);
+    var promise = exports.insertCommonRoom(req.body.userid, req.body.name, req.body.description, req.body.isPublic, req.body.bannerURL, req.body.homeBGURL);
     util.initPromiseCallback(promise, res);
 }
 
-exports.insertCommonRoom = function(name, description, userid, isPublic, banner, homeBG) {
+exports.insertCommonRoom = function(userid, name, description, isPublic, banner, homeBG) {
     var util = require('./util.js');
     var members = require('./members.js');
     var Q = require('q');
