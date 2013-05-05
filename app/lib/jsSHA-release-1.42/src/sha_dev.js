@@ -20,7 +20,7 @@
   */
 var SUPPORTED_ALGS = 4 | 2 | 1;
 
-(function (window)
+var sha = function ()
 {
 	"use strict";
 	/**
@@ -1347,5 +1347,7 @@ var SUPPORTED_ALGS = 4 | 2 | 1;
 		};
 	};
 
-	window['jsSHA'] = jsSHA;
-}(window));
+	return jsSHA;
+};
+
+exports.sha = sha;

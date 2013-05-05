@@ -178,7 +178,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   uploadPromise.then(function(value) {
                       console.log('banner uploaded to ' + value);
                       $scope.form.bannerURL = value;
-                      //$scope.finalizeSave();
+                      $scope.finalizeSave();
                   }, function(reason) {
                       // error handler here
                       console.log(reason);
@@ -194,7 +194,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   uploadPromise.then(function(value) {
                       console.log('homebg uploaded to ' + value);
                       $scope.form.homeBGURL = value;
-                      //$scope.finalizeSave();
+                      $scope.finalizeSave();
                   }, function(reason) {
                       // error handler here
                       console.log(reason);
