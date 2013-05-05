@@ -61,15 +61,15 @@ exports.uploadFile = function(req, res) {
     var awsAccessKeyID = process.env.AWS_ACCESS_KEY_ID || 'AKIAIHOET2BPVPNPRCDA';
     var awsSecretKey = process.env.AWS_SECRET_KEY || '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';
     
-    var encode64 = require('../../lib/awsquerysigner/ecmanaut.base64.js');
-    var hmac = require('../../lib/awsquerysigner/jssha256.js');
+    var shaObj = require('../../lib/jsSHA-release-1.42/src/sha1.js');
     var objectName = req.params.s3objectname;
     var mimeType = req.params.s3objecttype;
     var expires = Math.round((Date.now() / 1000) + 100); // PUT request to S3 must start within 100 seconds
     
     var amzHeaders = 'x-amz-acl:public-read'; // set the public read permission on the uploaded file
     var stringToSign = 'PUT\n\nimage/' + mimeType + '\n' + expires + '\n' + amzHeaders + '\n/' + s3BucketName + '/' + objectName;
-    var sig = encodeURI(encode64.Base64.encode(hmac.HMAC_SHA256_MAC(awsSecretKey, stringToSign)));
+    var jsSha = shaObj.jsSha(stringToSign, 'TEXT');
+    var hmac = jsSha.getHMAC(awsSecretKey, 'TEXT', 'SHA-1', 'B64');
     var url = 'https://' + s3BucketName + '.s3.amazonaws.com/' + objectName;
     res.json({
         signed_request: encodeURI(url + '?AWSAccessKeyId=' + awsAccessKeyID + '&Expires=' + expires + '&Signature=' + sig),
