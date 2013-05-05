@@ -13,13 +13,10 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
       $scope.moderatorFilter = '';
       $scope.userid = $cookieStore.get('user_id');
       $scope.isModerator = true;
-      console.log($cookieStore.get('user_id'));
-      console.log('querying common rooms...');
       CommonRoom.query({
           path: 'userid/' + $cookieStore.get('user_id'),
           successCallback: function(data) {
               try {
-                  console.log('common rooms received');
                   console.log(data.result);
                   if(data.result && data.result.length > 0) {
                       $scope.commonRooms = data.result;
@@ -33,10 +30,9 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   
                   var moderatedCommonRooms = 0;
                   var userid = $cookieStore.get('user_id');
-                  console.log(userid);
                   for(var i = 0; i < $scope.commonRooms.length; i++) {
-                      // check if userid matches moderator userid
-                      if(userid == $scope.commonRooms[i][3]) {
+                      // check if isModerator flag is set
+                      if($scope.commonRooms[i][6] == 1) {
                           moderatedCommonRooms++;
                       }
                   }
@@ -210,6 +206,8 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
       $scope.finalizeSave = function() {
           if($scope.isNameValid && $scope.isDescriptionValid && $scope.isBannerFileValid && $scope.isBannerDimensionsValid && $scope.isHomeBGFileValid && $scope.isHomeBGDimensionsValid && $scope.bannerLoaded && $scope.homebgLoaded) {
               $scope.form.userid = $cookieStore.get('user_id');
+              $scope.form.banner = undefined;
+              $scope.form.homeBG = undefined;
               if($rootScope.newCommonRoom) {
                   console.log('CommonRoom.insert');
                   CommonRoom.insert({

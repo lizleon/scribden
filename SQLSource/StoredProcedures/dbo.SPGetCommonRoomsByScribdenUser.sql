@@ -25,18 +25,17 @@ AS
 SELECT  CR.CommonRoomKey,
 		CR.Name,
 		CR.Description,
-		CR.fScribdenUserKey,
 		CR.isPublic,
 		CR.Banner,
 		CR.HomeBG,
+		M.isModerator,
 		CR.Active,
 		CR.ModDate
 FROM CommonRoom CR
 INNER JOIN Members M
 	ON M.fCommonRoomKey = CR.CommonRoomKey
 WHERE 
-	(CR.fScribdenUserKey = @ScribdenUserKey		-- user is the moderator
-	OR M.fScribdenUserKey = @ScribdenUserKey)	-- or a member
+	M.fScribdenUserKey = @ScribdenUserKey		-- a member/moderator
 	AND M.Approved = 1							-- approved by a moderator
 	AND CR.Active = 1							-- common room is currently active
 	AND M.Active = 1							-- entry is valid

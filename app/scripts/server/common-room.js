@@ -21,30 +21,49 @@ exports.insertCommonRoomProxy = function(req, res) {
 }
 
 exports.insertCommonRoom = function(userid, name, description, isPublic, banner, homeBG) {
+    console.log(userid + ',' + name + ',' + description + ',' + isPublic + ',' + banner + ',' + homeBG);
+    var Q = require('q');
     var util = require('./util.js');
     var members = require('./members.js');
-    var Q = require('q');
     var deferred = Q.defer();
+    var bannerParam;
+    var homeBGParam;
+    
+    if(banner) {
+        bannerParam = { type: 'VarChar', size: 255 };
+    }
+    else {
+        bannerParam = { type: 'Object' };
+    }
+    
+    if(homeBG) {
+        homeBGParam = { type: 'VarChar', size: 255 };
+    }
+    else {
+        homeBGParam = { type: 'Object' };
+    }
+    
     var cPromise = util.generalQuery('BEGIN EXEC SPInsertCommonRoom @nameParam, @descriptionParam, @isPublicParam, @bannerParam, @homeBGParam END', {
             nameParam: { type: 'VarChar', size: 255 },
             descriptionParam: { type: 'VarChar', size: 255 },
-            useridParam: { type: 'Int' },
             isPublicParam: { type: 'Bit' },
             bannerParam: { type: 'VarChar', size: 255 },
             homeBGParam: { type: 'VarChar', size: 255 }
         }, { 
             nameParam: name,
             descriptionParam: description,
-            useridParam: userid,
             isPublicParam: isPublic,
-            bannerParam: banner,
-            homeBGParam: homeBG
+            bannerParam: banner || null,
+            homeBGParam: homeBG || null
         });
     cPromise.then(function(value) {
+        console.log('added common room: ' + value);
         var listUserStatuses = require('./list-user-status.js');
+        console.log(listUserStatuses);
         var mPromise = members.insertMember(userid, listUserStatuses.ACTIVE, value[0], 1, 1);
         
         mPromise.then(function(value) {
+            console.log('added member');
             deferred.resolve(true);
         }, function(reason) {
             deferred.reject(new Error(reason)); 

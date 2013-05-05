@@ -34,6 +34,13 @@ END
 
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_Approved]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_Approved]
+END
+
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_isModerator]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_isModerator]
@@ -64,13 +71,6 @@ GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_CommonRoom_CommonRoomKey]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [PK_CommonRoom_CommonRoomKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
 END
 
 GO
@@ -137,7 +137,6 @@ CREATE TABLE [dbo].[CommonRoom](
 [CommonRoomKey] [int] IDENTITY(1,1) NOT NULL,
 [Name] [varchar](255) NOT NULL,
 [Description] [varchar](255) NULL,
-[fScribdenUserKey] [int] NOT NULL,
 [isPublic] [bit] NOT NULL,
 [Banner] [varchar](255) NULL,
 [HomeBG] [varchar](255) NULL,
@@ -152,16 +151,6 @@ CREATE TABLE [dbo].[CommonRoom](
 GO
 
 SET ANSI_PADDING OFF
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[CommonRoom]'))
-
-BEGIN
-ALTER TABLE [dbo].[CommonRoom]  WITH NOCHECK ADD  CONSTRAINT [FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey] FOREIGN KEY([fScribdenUserKey])
-REFERENCES [dbo].[ScribdenUser] ([ScribdenUserKey])
-ALTER TABLE [dbo].[CommonRoom] CHECK CONSTRAINT [FK_CommonRoom_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
-
 GO
 
 ALTER TABLE [dbo].[CommonRoom] ADD CONSTRAINT [DF_CommonRoom_Active] DEFAULT ((1)) FOR [Active]

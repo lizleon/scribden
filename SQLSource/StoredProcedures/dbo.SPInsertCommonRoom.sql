@@ -38,5 +38,5 @@ VALUES( @Name,
 		@Banner,
 		@HomeBG )
 
-SELECT @@IDENTITY
+SELECT @@IDENTITY as CommonRoomKey
 GO

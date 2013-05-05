@@ -2,6 +2,10 @@ var ACTIVE = 1,
     SUSPENDED = 2,
     BANNED = 3;
 
+exports.ACTIVE = ACTIVE;
+exports.SUSPENDED = SUSPENDED;
+exports.BANNED = BANNED;
+
 // @TODO
 /*
 exports.getListUserStatusesProxy = function(req, res) {
