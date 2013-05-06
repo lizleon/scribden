@@ -14,6 +14,32 @@ exports.getCommonRoomsByScribdenUser = function(userid) {
         });
 }
 
+
+exports.updateCommonRoomProxy = function(req, res) {
+    var util = require('./util.js');
+    var promise = exports.updateCommonRoom(req.body.commonRoomID, req.body.name, req.body.description, req.body.isPublic, req.body.bannerURL, req.body.homeBGURL);
+    util.initPromiseCallback(promise, res);
+}
+
+exports.updateCommonRoom = function(commonRoomID, name, description, isPublic, banner, homeBG) {
+    var util = require('./util.js');
+    return util.generalQuery('BEGIN EXEC SPUpdateCommonRoom @commonRoomIDParam, @nameParam, @descriptionParam, @isPublicParam, @bannerParam, @homeBGParam END', {
+            commonRoomIDParam: { type: 'Int' },
+            nameParam: { type: 'VarChar', size: 255 },
+            descriptionParam: { type: 'VarChar', size: 255 },
+            isPublicParam: { type: 'Bit' },
+            bannerParam: { type: 'VarChar', size: 255 },
+            homeBGParam: { type: 'VarChar', size: 255 }
+        }, { 
+            commonRoomIDParam : commonRoomID,
+            nameParam: name || null,
+            descriptionParam: description || null,
+            isPublicParam: isPublic || null,
+            bannerParam: banner || null,
+            homeBGParam: homeBG || null
+        });
+}
+
 exports.insertCommonRoomProxy = function(req, res) {
     var util = require('./util.js');
     var promise = exports.insertCommonRoom(req.body.userid, req.body.name, req.body.description, req.body.isPublic, req.body.bannerURL, req.body.homeBGURL);

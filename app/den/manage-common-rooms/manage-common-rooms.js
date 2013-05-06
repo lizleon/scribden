@@ -96,11 +96,9 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
       
       $scope.form.isPublic = true;
       if($rootScope.editingCommonRoom) {
-          $scope.form.commonRoomKey = $rootScope.editingCommonRoom[0];
+          $scope.form.commonRoomID = $rootScope.editingCommonRoom[0];
           $scope.form.name = $rootScope.editingCommonRoom[1];
           $scope.form.description = $rootScope.editingCommonRoom[2];
-          $scope.form.banner = $rootScope.editingCommonRoom[5];
-          $scope.form.homeBG = $rootScope.editingCommonRoom[6];
           
           if($rootScope.editingCommonRoom[4])
               $scope.form.isPublic = true;
@@ -145,7 +143,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               $scope.isBannerFileValid = true;
               $scope.bannerLoaded = true;
           }
-          
+          console.log($scope.form.homeBG);
           if($scope.form.homeBG) {
               $scope.homebgLoaded = false;
               ImageHandler.validate($scope.form.homeBG, HOMEBG_REQS.width, HOMEBG_REQS.height, 2097152).then(function(value) {
@@ -229,6 +227,22 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
               }
               else {
                   console.log('CommonRoom.update');
+                  CommonRoom.update({
+                      data: $scope.form,
+                      successCallback: function(data) {
+                          if(data.error) {
+                              // error handler here
+                              console.log(data.error);
+                          }
+                          else if(data.result) {
+                              $scope.close();
+                          }
+                          else {
+                              // error handler here
+                              console.log('insert failed, no error returned');
+                          }
+                      }
+                  });
               }
           }
           else {

@@ -75,7 +75,7 @@ angular.module('resources.scribden-resource', []).factory('ScribdenResource', ['
         };
         
         Resource.update = function(config){
-            var httpPromise = $http.put(defaultConfig.url + '/update', config.data);
+            var httpPromise = $http.post(defaultConfig.url + '/update', config.data);
             return factoryMethod(httpPromise, config.successCallback, config.errorCallback);
         };
 
