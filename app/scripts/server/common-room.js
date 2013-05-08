@@ -14,6 +14,22 @@ exports.getCommonRoomsByScribdenUser = function(userid) {
         });
 }
 
+exports.getUserCommonRoomByIdProxy = function(req, res) {
+    var util = require('./util.js');
+    var promise = exports.getCommonRoomsByScribdenUser(req.params.commonRoomID, req.params.userid);
+    util.initPromiseCallback(promise, res);
+}
+
+exports.getUserCommonRoomById = function(commonRoomID, userid) {
+    var util = require('./util.js');
+    return util.generalQuery('BEGIN EXEC SPGetUserCommonRoomById @commonRoomIdParam, @useridParam END', {
+            commonRoomIdParam: { type: 'Int' },
+            useridParam: { type: 'Int' }
+        }, { 
+            commonRoomIdParam: commonRoomID,
+            useridParam : userid
+        });
+}
 
 exports.updateCommonRoomProxy = function(req, res) {
     var util = require('./util.js');

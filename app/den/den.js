@@ -8,6 +8,24 @@ angular.module('den', ['den.manage-common-rooms'])
         controller: 'DenCtrl'
       })
   }])
-  .controller('DenCtrl', [ '$scope', '$http', '$location', function DenCtrl($scope, $http, $location) {
-      
+  .controller('DenCtrl', [ 'CommonRoom', '$scope', '$cookieStore', function DenCtrl(CommonRoom, $scope, $cookieStore) {
+      $scope.commonRooms = {};
+      $scope.userid = $cookieStore.get('user_id');
+      CommonRoom.query({
+          path: 'userid/' + $cookieStore.get('user_id'),
+          successCallback: function(data) {
+              try {
+                  console.log(data.result);
+                  if(data.result && data.result.length > 0) {
+                      $scope.commonRooms = data.result;
+                  }
+                  else {
+                      $scope.commonRooms = new Array();
+                  }
+              } catch(e) {
+                  // error handler here
+                  console.log(e);
+              }
+          }
+      });
   }]);

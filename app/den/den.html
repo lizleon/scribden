@@ -1,3 +1,7 @@
 <div class="center hero-unit" ng-controller="DenCtrl">
     <a href="/#/den/manage-common-rooms" class="btn">Manage Common Rooms</a>
+    <li ng-hide="commonRooms.length">No common rooms</li>
+    <div ng-repeat="commonRoom in commonRooms">
+        <a id="commonRoomLink" ng-href="#/common-room/{{ commonRoom[0] }}" class="btn-link"><img ng-src="{{ commonRoom[4] }}" /></a>
+    </div>
 </div>

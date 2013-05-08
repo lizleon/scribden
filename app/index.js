@@ -4,7 +4,8 @@ angular.module('ScribdenApp', [
     'resources.scribden-resource',
     'resources.user',
     'login',
-    'den'
+    'den',
+    'common-room'
 ])
   .config(function ($routeProvider) {
     $routeProvider

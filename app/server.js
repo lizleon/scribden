@@ -48,6 +48,7 @@ app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
 
 // common room
 app.get(API_PATH + 'common-room/userid/:userid', apiCommonRoom.getCommonRoomsByScribdenUserProxy);
+app.get(API_PATH + 'common-room/:commonRoomID/:userid', apiCommonRoom.getUserCommonRoomByIdProxy);
 app.post(API_PATH + 'common-room/update', apiCommonRoom.updateCommonRoomProxy);
 app.post(API_PATH + 'common-room', apiCommonRoom.insertCommonRoomProxy);
 
