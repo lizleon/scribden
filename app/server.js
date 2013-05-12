@@ -20,11 +20,17 @@ var express = require('express'),
 apiLogin = require('./scripts/server/login.js');
 // handles user data
 apiUser = require('./scripts/server/user.js');
+// handles common room data
+apiCommonRoom = require('./scripts/server/common-room.js');
+// handles various utility functions
+apiUtil = require('./scripts/server/util.js');
 
 app.configure(function () {
 	app.use(express.favicon());
-	app.use(express.bodyParser());
+	app.use(express.bodyParser({uploadDir:'./uploads'}));
 	app.use(express.logger('dev'));  //tiny, short, default
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: '31206tokoshinchrongraw543788' }));
     app.use(apiLogin.passport.initialize());
     app.use(apiLogin.passport.session());
 	app.use(app.router);
@@ -32,10 +38,22 @@ app.configure(function () {
 	app.use(express.errorHandler({dumpExceptions: true, showStack: true, showMessage: true}));
 });
 
+// user authentication
 app.post('/authenticate', apiLogin.authenticate);
+
+// scribden user
 app.get(API_PATH + 'user/name/:username', apiUser.getScribdenUserByUsernameProxy);
 app.get(API_PATH + 'user/:id', apiUser.getScribdenUserByIdProxy);
 app.post(API_PATH + 'user', apiUser.insertScribdenUserProxy);
+
+// common room
+app.get(API_PATH + 'common-room/userid/:userid', apiCommonRoom.getCommonRoomsByScribdenUserProxy);
+app.get(API_PATH + 'common-room/:commonRoomID/:userid', apiCommonRoom.getUserCommonRoomByIdProxy);
+app.post(API_PATH + 'common-room/update', apiCommonRoom.updateCommonRoomProxy);
+app.post(API_PATH + 'common-room', apiCommonRoom.insertCommonRoomProxy);
+
+// utilities
+app.get(API_PATH + 'signS3put/:s3objecttype/:s3objectname', apiUtil.uploadFile);
 
 app.listen(port, function() {
     console.log("Listening on " + port);

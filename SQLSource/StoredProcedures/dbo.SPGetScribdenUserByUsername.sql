@@ -13,7 +13,7 @@ GO
 Author: Jonathan S. Collins Leon
 Desc: Gets a user given a username
 Modified: 04/04/2013
-Exec: EXEC SPGetScribdenUserByUsername 'testUser'
+Exec: EXEC SPGetScribdenUserByUsername 'scribdentest2'
 
 ****************************************************************************/
 
@@ -22,8 +22,14 @@ CREATE PROCEDURE [dbo].[SPGetScribdenUserByUsername]
 
 AS
 
-SELECT * 
+SELECT  ScribdenUserKey,
+		Username,
+		Password,
+		Email,
+		Active,
+		ModDate
 FROM ScribdenUser 
 WHERE Username = @Username
+	AND Active = 1
 
 GO

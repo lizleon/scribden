@@ -1,6 +1,6 @@
 'use strict';
 // handles registration, logging in, and session authentication
-angular.module('login', ['resources.user', 'den'])
+angular.module('login', ['resources.user', 'den', 'ngCookies'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/login', {
@@ -12,7 +12,7 @@ angular.module('login', ['resources.user', 'den'])
         controller: 'RegisterCtrl'
       });
   }])
-  .controller('LoginCtrl', [ '$scope', '$http', '$location', function LoginCtrl($scope, $http, $location) {
+  .controller('LoginCtrl', [ '$scope', '$http', '$location', '$cookieStore', function LoginCtrl($scope, $http, $location, $cookieStore) {
       $scope.form = {};
       $scope.login = function() {
           // authenticate the user and redirect to their den
@@ -24,6 +24,8 @@ angular.module('login', ['resources.user', 'den'])
                       $scope.form.password = '';
                   }
                   else {
+                      // save the user's id for the duration of the session
+                      $cookieStore.put('user_id', value.data.result);
                       $location.path('/den');
                   }
               }, function(reason) {
@@ -44,13 +46,13 @@ angular.module('login', ['resources.user', 'den'])
       // register the user
       $scope.register = function() {
           // validate form
-          var usernameValidation = /^([a-zA-Z0-9_-]){3,32}$/;
-          var emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-          var passwordValidation = /^[a-zA-Z0-9!@$%^&-_]{6,16}$/;
+          var usernameValidation = /^(?!undefined)[a-zA-Z0-9_\-]{3,32}$/;
+          var emailValidation = /^(?!undefined)[a-zA-Z0-9._\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}$/;
+          var passwordValidation = /^(?!undefined)[a-zA-Z0-9!@\$%\^&\-_]{6,16}$/;
           $scope.isUsernameValid = usernameValidation.test($scope.form.username);
           $scope.isEmailValid = emailValidation.test($scope.form.email);
           $scope.isPasswordValid = passwordValidation.test($scope.form.password) && passwordValidation.test($scope.form.confirmpwd);
-          $scope.isPasswordMatched = $scope.form.password == $scope.form.confirmpwd;
+          $scope.isPasswordMatched = $scope.form.password === $scope.form.confirmpwd;
           
           // check form validity
           if($scope.isUsernameValid && $scope.isEmailValid && $scope.isPasswordValid && $scope.isPasswordMatched) {

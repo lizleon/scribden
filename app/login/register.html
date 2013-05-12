@@ -2,23 +2,23 @@
     <h1>ScribDen</h1>
     <form id="loginForm" name="loginForm" ng-submit="register()">
         <input type="text" id="username" name="username" placeholder="Username" ng-model="form.username" />
-        <br ng-class="{ hide: isUsernameValid }" />
-        <span id="usernameError" ng-class="{ hide: isUsernameValid }">Username must be 3 to 32 alphanumeric characters long.</span>
-        <br ng-class="{ hide: isUsernameAvailable }" />
-        <span id="usernameExists" class="form-horizontal" ng-class="{ hide: isUsernameAvailable }">Username already exists.</span>
+        <br ng-hide="isUsernameValid" />
+        <span id="usernameError" ng-hide="isUsernameValid" class="alert alert-error">Username must be 3 to 32 alphanumeric characters long.</span>
+        <br ng-hide="isUsernameAvailable" />
+        <span id="usernameExists" class="form-horizontal" ng-hide="isUsernameAvailable" class="alert alert-error">Username already exists.</span>
         <br />
         <input type="text" id="email" name="email" placeholder="Email" ng-model="form.email" />
-        <br ng-class="{ hide: isEmailValid }" />
-        <span id="emailError" class="form-horizontal" ng-class="{ hide: isEmailValid }">Invalid format. Please use the format example@host.com.</span>
+        <br ng-hide="isEmailValid" />
+        <span id="emailError" class="form-horizontal" ng-hide="isEmailValid" class="alert alert-error">Invalid format. Please use the format example@host.com.</span>
         <br />
         <input type="password" id="password" name="password" placeholder="Password" ng-model="form.password" />
-        <br ng-class="{ hide: isPasswordValid }" />
-        <span id="passwordError" class="form-horizontal" ng-class="{ hide: isPasswordValid }">Password must be 6 to 16 characters long. Not all symbols are supported.</span>
+        <br ng-hide="isPasswordValid" />
+        <span id="passwordError" class="form-horizontal" ng-hide="isPasswordValid" class="alert alert-error">Password must be 6 to 16 characters long. Not all symbols are supported.</span>
         <br />
         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" ng-model="form.confirmpwd" />
         <br />
-        <span id="confirmPasswordError" class="form-horizontal" ng-class="{ hide: isPasswordMatched }">Passwords do not match.</span>
-        <br ng-class="{ hide: isPasswordMatched }" />
+        <span id="confirmPasswordError" class="form-horizontal" ng-hide="isPasswordMatched" class="alert alert-error">Passwords do not match.</span>
+        <br ng-hide="isPasswordMatched" />
         <input type="submit" class="btn" id="login" name="login" value="Begin">
     </form>
 </div>

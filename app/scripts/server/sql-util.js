@@ -9,7 +9,7 @@ var sqlConfig = {
 // var sql declared in scripts/server.js
 exports.getSQLConnection = function() {
     // create a connection to the DB
-    var Q = require('Q');
+    var Q = require('q');
     var sql = require('tds');
     var result = Q.defer();
     

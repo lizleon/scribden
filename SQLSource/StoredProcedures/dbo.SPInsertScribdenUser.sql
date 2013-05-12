@@ -11,7 +11,7 @@ GO
 /***************************************************************************
 
 Author: Jonathan S. Collins Leon
-Desc: Gets a user given a username
+Desc: Inserts a new user.
 Modified: 04/04/2013
 Exec: EXEC SPInsertScribdenUser 'testUser', 'testPassword', 'test@email.com'
 

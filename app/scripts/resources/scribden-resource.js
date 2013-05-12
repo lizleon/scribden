@@ -15,6 +15,10 @@ angular.module('resources.scribden-resource', []).factory('ScribdenResource', ['
             },
             errorCallback: function(undefined, status, headers, config){
                 // generic error handler here
+                console.log('Error');
+                console.log(status);
+                console.log(headers);
+                console.log(config);
             }
         };
 
@@ -23,23 +27,24 @@ angular.module('resources.scribden-resource', []).factory('ScribdenResource', ['
             var error = errorCallback || angular.noop;
             var isArray = isArray || false;
 
-            return httpPromise.then(function(response) {
+            return httpPromise.then(function(value) {
                 var result;
 				
                 if (isArray) {
                     result = [];
-                    for (var i = 0; i < response.data.length; i++) {
-                        result.push(new Resource(response.data[i]));
+                    for (var i = 0; i < value.data.length; i++) {
+                        result.push(new Resource(value.data[i]));
                     }
                 } 
                 else {
-                    result = new Resource(response.data);
+                    result = new Resource(value.data);
                 }
 
-                success(result, response.status, response.headers, response.config);
+                success(result, value.status, value.headers, value.config);
                 return result;
-            }, function(response) {
-                error(undefined, response.status, response.headers, response.config);
+            }, function(reason) {
+                console.log(reason);
+                error(undefined, reason.status, reason.headers, reason.config);
                 return undefined;
             });
         };
@@ -49,19 +54,29 @@ angular.module('resources.scribden-resource', []).factory('ScribdenResource', ['
         };
         
         Resource.query = function(config){
-		   var defaultConfigCopy = angular.copy(defaultConfig);
-           var newConfig;
-            
-            if(angular.isObject(config)) {
-                newConfig = angular.extend(defaultConfigCopy, config);
-            } 
-            else {
-                newConfig = defaultConfig;
+            try {
+               var defaultConfigCopy = angular.copy(defaultConfig);
+               var newConfig;
+                
+                if(angular.isObject(config)) {
+                    newConfig = angular.extend(defaultConfigCopy, config);
+                } 
+                else {
+                    newConfig = defaultConfig;
+                }
+                
+                newConfig.url = newConfig.url + '/' + newConfig.path;
+                var httpPromise = $http.get(newConfig.url, newConfig);
+            } catch(e) {
+                // error handler here
+                console.log(e);
             }
-            
-            newConfig.url = newConfig.url + '/' + newConfig.path;
-            var httpPromise = $http.get(newConfig.url, newConfig);
             return factoryMethod(httpPromise, newConfig.successCallback, newConfig.errorCallback, newConfig.isArray);
+        };
+        
+        Resource.update = function(config){
+            var httpPromise = $http.post(defaultConfig.url + '/update', config.data);
+            return factoryMethod(httpPromise, config.successCallback, config.errorCallback);
         };
 
         Resource.insert = function(config){

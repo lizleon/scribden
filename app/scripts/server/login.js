@@ -41,7 +41,7 @@ exports.authenticate = function(req, res, next) {
     var deferred = Q.defer();
     var fnAuthenticate = passport.authenticate('local', { failureRedirect: '/' }, function(req, res, err) {
         if(res) {
-            deferred.resolve(true);
+            deferred.resolve(res.id);
         }
         else {
             deferred.reject(new Error(err));
