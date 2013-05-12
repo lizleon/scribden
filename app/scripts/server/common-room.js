@@ -16,7 +16,7 @@ exports.getCommonRoomsByScribdenUser = function(userid) {
 
 exports.getUserCommonRoomByIdProxy = function(req, res) {
     var util = require('./util.js');
-    var promise = exports.getCommonRoomsByScribdenUser(req.params.commonRoomID, req.params.userid);
+    var promise = exports.getUserCommonRoomById(req.params.commonRoomID, req.params.userid);
     util.initPromiseCallback(promise, res);
 }
 

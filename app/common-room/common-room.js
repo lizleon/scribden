@@ -1,5 +1,7 @@
 'use strict';
-
+// If using a resolve block, the controller that contains a resolve block cannot be an ng-controller in the html.
+// A child controller must be created, and that will get the resolved variables. This controller is what should
+// be used as the ng-controller
 angular.module('common-room', ['resources.common-room', 'ngCookies'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -23,6 +25,8 @@ angular.module('common-room', ['resources.common-room', 'ngCookies'])
       })
   }])
   .controller('CommonRoomCtrl', [ 'CommonRoom', 'commonRoomData', '$scope', '$cookieStore', function CommonRoomCtrl(CommonRoom, commonRoomData, $scope, $cookieStore) {
-      $scope.commonRoom = commonRoomData;
+      $scope.commonRoom = commonRoomData.result[0];
       $scope.userid = $cookieStore.get('user_id');
-  }]);
+  }]).controller('CommonRoomHomeViewCtrl', [ 'CommonRoom', '$scope', '$cookieStore', function CommonRoomHomeViewCtrl(CommonRoom, $scope, $cookieStore) {
+      //$scope.userid = $cookieStore.get('user_id');
+  }])
