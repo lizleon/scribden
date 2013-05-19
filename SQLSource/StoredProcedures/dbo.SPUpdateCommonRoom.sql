@@ -11,7 +11,7 @@ GO
 /*******************************************************************************
 
 Author: Jonathan S. Collins Leon
-Desc: Gets all of the common rooms that the user is a member or a moderator of
+Desc: Updates a given common room's data
 Modified: 04/17/2013
 Exec: EXEC SPUpdateCommonRoom 1, 'Test Name', 'Test Description', true, 
 	  'http://www.scribden.com/public/gljfsj424hjaksj.jpg', 'http://www.scribden.com/public/gljfsj424hjaksj.jpg'

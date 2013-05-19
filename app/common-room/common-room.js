@@ -27,6 +27,7 @@ angular.module('common-room', ['resources.common-room', 'ngCookies'])
   .controller('CommonRoomCtrl', [ 'CommonRoom', 'commonRoomData', '$scope', '$cookieStore', function CommonRoomCtrl(CommonRoom, commonRoomData, $scope, $cookieStore) {
       $scope.commonRoom = commonRoomData.result[0];
       $scope.userid = $cookieStore.get('user_id');
-  }]).controller('CommonRoomHomeViewCtrl', [ 'CommonRoom', '$scope', '$cookieStore', function CommonRoomHomeViewCtrl(CommonRoom, $scope, $cookieStore) {
+  }])
+  .controller('CommonRoomHomeViewCtrl', [ 'CommonRoom', '$scope', '$cookieStore', function CommonRoomHomeViewCtrl(CommonRoom, $scope, $cookieStore) {
       //$scope.userid = $cookieStore.get('user_id');
   }])

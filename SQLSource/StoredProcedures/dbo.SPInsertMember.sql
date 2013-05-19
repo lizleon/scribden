@@ -11,7 +11,7 @@ GO
 /*******************************************************************************
 
 Author: Jonathan S. Collins Leon
-Desc: Gets all of the common rooms that the user is a member or a moderator of
+Desc: Adds a new member to a common room
 Modified: 04/17/2013
 Exec: EXEC SPInsertMember 4, 1, 1, 1, 1
 
