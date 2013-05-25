@@ -5,12 +5,13 @@ angular.module('ScribdenApp', [
     'resources.user',
     'login',
     'den',
-    'common-room'
+    'common-room',
+    'conversation'
 ])
   .config(function ($routeProvider) {
     $routeProvider
       .otherwise({
-        redirectTo: '/login'
+        redirectTo: '/login' // replace with 404
       })
   })
   // base url to use when calling the server

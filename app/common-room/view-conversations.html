@@ -1,0 +1,10 @@
+<div class="center hero-unit" ng-controller="CommonRoomConversationViewCtrl">
+    <div ng-repeat="post in conversations">
+        <span id="username">{{ post[4] }}</span>
+        <br />
+        <div id="content">
+            {{ post[3] }}
+        </div>
+    </div>
+    <a href="#/conversation/common-room/{{ commonRoom[0] }}" id="addNewConversation" class="btn">Start a new conversation</a>
+</div>
