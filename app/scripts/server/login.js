@@ -9,17 +9,19 @@ passport.use(new LocalStrategy(
     function(username, password, done) {
         var userPromise = User.getScribdenUserByUsername(username);
         userPromise.then(function(value) {
+            console.log(value);
             try {
                 if(!value || (value && value.length == 0)) {
-                    console.log('err username');
+                    console.log('no records found');
                     return done(null, false, { message: 'Incorrect username.' });
                 }
-                else if(value[0][2] != password) {
+                else if(value[0].Password != password) {
                     console.log('err password');
+                    console.log(value[0].Password + ' != ' + password);
                     return done(null, false, { message: 'Incorrect password.' });
                 }
                 else {
-                    var user = { id: value[0][0], username: value[0][1], password: value[0][2] };
+                    var user = { id: value[0].ScribdenUserKey, username: value[0].Username, password: value[0].Password };
                     return done(null, user);
                 }
             } catch(e) {

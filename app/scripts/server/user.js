@@ -5,12 +5,17 @@ exports.getScribdenUserByUsernameProxy = function(req, res) {
 }
 
 exports.getScribdenUserByUsername = function(username) {
-    var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPGetScribdenUserByUsername @usernameParam END', {
-            usernameParam: { type: 'VarChar', size: 255 }
-        }, { 
-            usernameParam : username 
-        });
+    var util = require('./sql-util.js');
+    return util.generalQuery('SELECT  ScribdenUserKey, ' +
+                                      'Username, ' +
+                                      'Password, ' +
+                                      'Email, ' +
+                                      'Active, ' +
+                                      'ModDate ' +
+                              'FROM ScribdenUser ' +
+                              'WHERE Username = ? ' +
+                                  'AND Active = 1',
+                            [username]);
 }
 
 exports.getScribdenUserByIdProxy = function(req, res) {
@@ -20,12 +25,17 @@ exports.getScribdenUserByIdProxy = function(req, res) {
 }
 
 exports.getScribdenUserById = function(id) {
-    var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPGetScribdenUserById @ScribdenUserKey END', {
-            idParam: { type: 'Int' }
-        }, { 
-            idParam : id
-        });
+    var util = require('./sql-util.js');
+    return util.generalQuery('SELECT  ScribdenUserKey, ' +
+                                      'Username, ' +
+                                      'Password, ' +
+                                      'Email, ' +
+                                      'Active, ' +
+                                      'ModDate ' +
+                              'FROM ScribdenUser ' +
+                              'WHERE ScribdenUserKey = ? '+
+                                  'AND Active = 1',
+                                [id]);
 }
 
 exports.insertScribdenUserProxy = function(req, res) {
@@ -35,14 +45,8 @@ exports.insertScribdenUserProxy = function(req, res) {
 }
 
 exports.insertScribdenUser = function(username, password, email) {
-    var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPInsertScribdenUser @usernameParam, @passwordParam, @emailParam END', {
-            usernameParam: { type: 'VarChar', size: 32 },
-            passwordParam: { type: 'VarChar', size: 15 },
-            emailParam: { type: 'VarChar', size: 255 }
-        }, { 
-            usernameParam : username,
-            passwordParam : password,
-            emailParam : email
-        });
+    var util = require('./sql-util.js');
+    return util.generalQuery('INSERT INTO ScribdenUser (Username, Password, Email) ' +
+                              'VALUES (?, ?, ?)',
+                              [username, password, email]);
 }

@@ -1,0 +1,123 @@
+application name: ScribDen
+BBS name: Common Room
+aws access key id: AKIAIHOET2BPVPNPRCDA
+aws secret key: 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
+param1: elasticbeanstalk-us-east-1-045472282667
+param2: http://Default-Environment-awug36icq7.elasticbeanstalk.com
+param5: Production
+
+Install the 32-bit version of everything, as 64-bit has problems
+Installed Heroku
+Installed Node js
+
+Clone Git repository
+Install yeoman/grunt/bower: npm install -g yo grunt-cli bower
+Install angular generator: npm install generator-angular generator-karma
+yo angular
+npm install && bower install --dev
+Install ruby
+Use cmd with ruby
+	gem update --system
+	gem install compass
+bower install angular-ui
+npm install --save grunt-karma
+Issues with Grunt on Windows because of system PATH with Ruby and Compass
+	- apparently an unresolved issue?
+	grunt test
+	grunt server
+	grunt
+npm install socket.io
+npm install -g karma
+Environment variables:
+	CHROME_BIN = location of chrome.exe (ie: C:\Users\(user.name)\AppData\Local\Google\Chrome SxS\Application\chrome.exe)
+	CHROME_CANARY_BIN = location of chrome.exe (canary)
+	FIREFOX_BIN = location of firefox.exe
+	IE_BIN = location of iexplorer.exe
+	PHANTOMJS_BIN = location of phantomjs.exe (ie: C:\PhantomJS\phantomjs.exe)
+karma init; answer questions
+Install Google Chrome Canary
+Install Brackets IDE
+Install PhantomJS
+npm install -g testacular
+npm install express
+Install Heroku Toolbelt
+Add express to package.json dependencies
+npm install jade
+gem install sass
+gem install compass
+"Start Command Prompt with Ruby", open properties, change "Start in" to working directory
+discarding heroku and postgres
+downloaded aws sdk
+installed ms sql server express
+acquired aws access keys
+init aws elastic beanstalk
+
+
+Setting up SQL Server
+
+Step-by-step
+1. Open SQL Server Configuration Manager. Click Start -> Programs -> Microsoft SQL Server 2008 -> Configuration Tools ->SQL Server Configuration Manager.
+2. On SQL Server Configuration Manager, select SQL Server Services on the left window. If the state on SQL Server Browser is not running, you have to configure and start the service. Otherwise, you can skip to step 6.
+3. Double-click on SQL Server Browser, the Properties window will show up. Set the account for start SQL Server Browser Service. In this example, I set to Local Service account.
+4. On SQL Server Browser Properties, move to Service tab and change Start Mode to Automatic. Therefore, the service will be start automatically when the computer starts. Click OK to apply changes.
+5. Back to SQL Server Configuration Manager, right-click on SQL Server Bowser on the right window and select Start to start the service.
+6. On the left window, expand SQL Server Network Configuration -> Protocols for SQLEXPRESS. You see that TCP/IP protocol status is disabled.
+7. Right-click on TCP/IP and select Enable to enable the protocol.
+8. There is a pop-up shown up that you have to restart the SQL Service to apply changes.
+9. On the left window, select SQL Server Services. Select SQL Server (SQLEXPRESS) on the right window -> click Restart. The SQL Server service will be restarted.
+10. Open Microsoft SQL Server Management Studio and connect to the SQL Server 2008 Express.
+11. Right-click on the SQL Server Instance and select Properties.
+12. On Server Properties, select Security on the left window. Then, select SQL Server and Windows Authentication mode.
+13. Again, there is a pop-up shown up that you have to restart the SQL Service to apply changes.
+14. Right-click on the SQL Server Instance and select Restart.
+15. Create a "db security group" and add CIDR range - of your public facing IP address. This way RDS instance can give access to your local Win2008R2 Server running SQL Server Management Studio to connect.
+
+RDS in AWS
+To enable remote connection:
+Services->RDS->DB Security Groups
+Add CIDR/IP with your IP address
+Don't forget to be added in a security group
+
+AWS/Git
+
+Download AWS DevTools, which is part of the command line interface package, at the AWS Sample Code & Libraries website. Simply download the .zip file, and unzip it to a directory on your local machine.
+
+Double-click AWSDevTools-OneTimeSetup.bat. You can find AWSDevTools-OneTimeSetup.bat in the AWS DevTools/Windows directory. The setup script installs all of the necessary pieces for pushing AWS Elastic Beanstalk applications. You need to run this setup script only once.
+
+If you haven't already set up a Git repository, you'll need to first create one. If you have an application in a directory, you can change to that directory and then type the following command to initialize your Git repository.
+
+git init .
+
+Note
+
+You need to run the PowerShell commands from an environment that has access to Git. If you installed Git as a native Windows program, that would be cmd.exe. If you installed Git wrapped inside Git Bash, that would be Git Bash.
+
+Copy the AWSDevTools-RepositorySetup.bat from the AWS DevTools/Windows directory to your Git repository directory, and then double-click AWSDevTools-RepositorySetup.bat. You need to run this script for each Git repository.
+
+Create aws_credential_file and place it in C:\Users\<user>\.elasticbeanstalk\aws_credential_file
+contains: 
+AWSAccessKeyId=<your key id>
+AWSSecretKey=<your secret key>
+
+git aws.config
+starts configuration process for AWS?
+set application name and environment name
+
+git aws.push adds your code to the environment, I think?
+
+npm install socket.io
+npm install passport
+npm install passport-local
+npm install node-tds (sql)
+npm install node-inspector (nodejs debugger)
+
+to debug:
+(in main directory)
+node_modules/.bin/node-inspector &
+(in new cmd window)
+node --debug-brk app/server.js
+npm install q
+
+
+
+cannot find module tds. Goddammit.
