@@ -4,266 +4,104 @@ Desc: Creates the Common Room, Members, and ListUserStatus tables
 Modified: 04/17/2013
 ************************************/
 
+DROP PROCEDURE IF EXISTS FeatureCommonRoomDDL;
+delimiter $
+CREATE PROCEDURE FeatureCommonRoomDDL()
+BEGIN
+
 /********************************** Remove Constraints and drop table Members ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_Members_MembersKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [PK_Members_MembersKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Members' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE Members DROP PRIMARY KEY;
+END IF;
 
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Members' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Members_fScribdenUserKey') > 0 THEN
+	ALTER TABLE Members DROP FOREIGN KEY FK_Members_fScribdenUserKey;
+END IF;
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Members' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Members_fListUserStatusKey') > 0 THEN
+	ALTER TABLE Members DROP FOREIGN KEY FK_Members_fListUserStatusKey;
+END IF;
 
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Members' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Members_fCommonRoomKey') > 0 THEN
+	ALTER TABLE Members DROP FOREIGN KEY FK_Members_fCommonRoomKey;
+END IF;
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_Approved]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_Approved]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_isModerator]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_isModerator]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Members_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Members] DROP CONSTRAINT [DF_Members_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Members]') AND type in (N'U'))
-DROP TABLE [dbo].[Members]
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Members') > 0 THEN
+	DROP TABLE Members;
+END IF;
 
 /********************************** Remove Constraints and drop table CommonRoom ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_CommonRoom_CommonRoomKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [PK_CommonRoom_CommonRoomKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'CommonRoom' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE CommonRoom DROP PRIMARY KEY;
+END IF;
 
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_CommonRoom_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [DF_CommonRoom_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_CommonRoom_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[CommonRoom] DROP CONSTRAINT [DF_CommonRoom_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CommonRoom]') AND type in (N'U'))
-DROP TABLE [dbo].[CommonRoom]
-GO
-
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'CommonRoom') > 0 THEN
+	DROP TABLE CommonRoom;
+END IF;
 
 /********************************** Remove Constraints and drop table ListUserStatus ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_ListUserStatus_ListUserStatusKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [PK_ListUserStatus_ListUserStatusKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'ListUserStatus' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE ListUserStatus DROP PRIMARY KEY;
+END IF;
 
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_ListUserStatus_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ListUserStatus] DROP CONSTRAINT [DF_ListUserStatus_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ListUserStatus]') AND type in (N'U'))
-DROP TABLE [dbo].[ListUserStatus]
-GO
-
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'ListUserStatus') > 0 THEN
+	DROP TABLE ListUserStatus;
+END IF;
 
 /********** Create CommonRoom Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE CommonRoom(
+CommonRoomKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+Name varchar(255) NOT NULL,
+Description varchar(255) NULL,
+isPublic boolean NOT NULL,
+Banner varchar(255) NULL,
+HomeBG varchar(255) NULL,
+Active boolean NOT NULL,
+ModDate timestamp NOT NULL
+);
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[CommonRoom](
-[CommonRoomKey] [int] IDENTITY(1,1) NOT NULL,
-[Name] [varchar](255) NOT NULL,
-[Description] [varchar](255) NULL,
-[isPublic] [bit] NOT NULL,
-[Banner] [varchar](255) NULL,
-[HomeBG] [varchar](255) NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_CommonRoom_CommonRoomKey] PRIMARY KEY CLUSTERED
-(
-[CommonRoomKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[CommonRoom] ADD CONSTRAINT [DF_CommonRoom_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[CommonRoom] ADD CONSTRAINT [DF_CommonRoom_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
-
+ALTER TABLE CommonRoom ALTER COLUMN Active SET DEFAULT true;
 
 /********** Create ListUserStatus Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE ListUserStatus(
+ListUserStatusKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+Status varchar(255) NOT NULL,
+Active boolean NOT NULL,
+ModDate timestamp NOT NULL
+);
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[ListUserStatus](
-[ListUserStatusKey] [int] IDENTITY(1,1) NOT NULL,
-[Status] [varchar](255) NOT NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_ListUserStatus_ListUserStatusKey] PRIMARY KEY CLUSTERED
-(
-[ListUserStatusKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[ListUserStatus] ADD CONSTRAINT [DF_ListUserStatus_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[ListUserStatus] ADD CONSTRAINT [DF_ListUserStatus_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
-
+ALTER TABLE ListUserStatus ALTER COLUMN Active SET DEFAULT true;
 
 /********** Create Members Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE Members(
+MembersKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+fScribdenUserKey int NOT NULL,
+fListUserStatusKey int NOT NULL,
+fCommonRoomKey int NOT NULL,
+Approved boolean NOT NULL,
+isModerator boolean NOT NULL,
+Active boolean NOT NULL,
+ModDate timestamp NOT NULL,
+CONSTRAINT FK_Members_fScribdenUserKey FOREIGN KEY (fScribdenUserKey) REFERENCES ScribdenUser (ScribdenUserKey)
+	ON DELETE CASCADE,
+CONSTRAINT FK_Members_fListUserStatusKey FOREIGN KEY (fListUserStatusKey) REFERENCES ListUserStatus (ListUserStatusKey)
+	ON DELETE SET NULL,
+CONSTRAINT FK_Members_fCommonRoomKey FOREIGN KEY (fCommonRoomKey) REFERENCES CommonRoom (fCommonRoomKey)
+	ON DELETE CASCADE
+) ENGINE=InnoDB;
 
-SET QUOTED_IDENTIFIER ON
-GO
+ALTER TABLE Members ALTER COLUMN Approved SET DEFAULT false;
+ALTER TABLE Members ALTER COLUMN isModerator SET DEFAULT false;
+ALTER TABLE Members ALTER COLUMN Active SET DEFAULT true;
 
-SET ANSI_PADDING ON
-GO
+END$
 
-CREATE TABLE [dbo].[Members](
-[MembersKey] [int] IDENTITY(1,1) NOT NULL,
-[fScribdenUserKey] [int] NOT NULL,
-[fListUserStatusKey] [int] NOT NULL,
-[fCommonRoomKey] [int] NOT NULL,
-[Approved] [bit] NOT NULL,
-[isModerator] [bit] NOT NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_Members_MembersKey] PRIMARY KEY CLUSTERED
-(
-[MembersKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+delimiter ;
 
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Members]'))
-
-BEGIN
-ALTER TABLE [dbo].[Members]  WITH NOCHECK ADD  CONSTRAINT [FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey] FOREIGN KEY([fScribdenUserKey])
-REFERENCES [dbo].[ScribdenUser] ([ScribdenUserKey])
-ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [FK_Members_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Members]'))
-
-BEGIN
-ALTER TABLE [dbo].[Members]  WITH NOCHECK ADD  CONSTRAINT [FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey] FOREIGN KEY([fListUserStatusKey])
-REFERENCES [dbo].[ListUserStatus] ([ListUserStatusKey])
-ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [FK_Members_fListUserStatusKey>>ListUserStatus_ListUserStatusKey]
-END
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Members]'))
-
-BEGIN
-ALTER TABLE [dbo].[Members]  WITH NOCHECK ADD  CONSTRAINT [FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey] FOREIGN KEY([fCommonRoomKey])
-REFERENCES [dbo].[CommonRoom] ([CommonRoomKey])
-ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [FK_Members_fCommonRoomKey>>CommonRoom_CommonRoomKey]
-END
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_Approved] DEFAULT ((0)) FOR [Approved]
-GO
-
-ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_isModerator] DEFAULT ((0)) FOR [isModerator]
-GO
-
-ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[Members] ADD CONSTRAINT [DF_Members_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
-
+CALL FeatureCommonRoomDDL();

@@ -4,312 +4,119 @@ Desc: Creates the Conversation, Post, and FollowedConversation tables
 Modified: 05/18/2013
 ************************************/
 
+DROP PROCEDURE IF EXISTS FeatureConversationDDL;
+delimiter $
+CREATE PROCEDURE FeatureConversationDDL()
+BEGIN
+
 /********************************** Remove Constraints on table Conversation ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_Conversation_ConversationKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [PK_Conversation_ConversationKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Conversation' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE Conversation DROP PRIMARY KEY;
+END IF;
 
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Conversation_fCommonRoomKey>>CommonRoom_CommonRoomKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [FK_Conversation_fCommonRoomKey>>CommonRoom_CommonRoomKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Conversation_IsBranch]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [DF_Conversation_IsBranch]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Conversation_IsClosed]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [DF_Conversation_IsClosed]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Conversation_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [DF_Conversation_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Conversation_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Conversation] DROP CONSTRAINT [DF_Conversation_ModDate]
-END
-
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Conversation' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Conversation_fCommonRoomKey') > 0 THEN
+	ALTER TABLE ScribdenUser DROP FOREIGN KEY FK_Conversation_fCommonRoomKey;
+END IF;
 
 /********************************** Remove Constraints and drop table Post ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_Post_PostKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [PK_Post_PostKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Post' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE Post DROP PRIMARY KEY;
+END IF;
 
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Post' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Post_fScribdenUserKey') > 0 THEN
+	ALTER TABLE Post DROP FOREIGN KEY FK_Post_fScribdenUserKey;
+END IF;
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Post_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [FK_Post_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Post' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Post_fParentConversationKey') > 0 THEN
+	ALTER TABLE Post DROP FOREIGN KEY FK_Post_fParentConversationKey;
+END IF;
 
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Post' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_Post_fChildConversationKey') > 0 THEN
+	ALTER TABLE Post DROP FOREIGN KEY FK_Post_fChildConversationKey;
+END IF;
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Post_fParentConversationKey>>Conversation_ConversationKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [FK_Post_fParentConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_Post_fChildConversationKey>>Conversation_ConversationKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [FK_Post_fChildConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Post_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [DF_Post_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Post_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Post] DROP CONSTRAINT [DF_Post_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Post]') AND type in (N'U'))
-DROP TABLE [dbo].[Post]
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Post') > 0 THEN
+	DROP TABLE Post;
+END IF;
 
 /********************************** Remove Constraints and drop table FollowedConversation ********************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[PK_FollowedConversation_FollowedConversationKey]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation] DROP CONSTRAINT [PK_FollowedConversation_FollowedConversationKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'FollowedConversation' AND CONSTRAINT_TYPE = 'PRIMARY KEY') > 0 THEN
+	ALTER TABLE FollowedConversation DROP PRIMARY KEY;
+END IF;
 
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'FollowedConversation' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_FollowedConversation_fScribdenUserKey') > 0 THEN
+	ALTER TABLE FollowedConversation DROP FOREIGN KEY FK_FollowedConversation_fScribdenUserKey;
+END IF;
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_FollowedConversation_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation] DROP CONSTRAINT [FK_FollowedConversation_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'FollowedConversation' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME = 'FK_FollowedConversation_fConversationKey') > 0 THEN
+	ALTER TABLE FollowedConversation DROP FOREIGN KEY FK_FollowedConversation_fConversationKey;
+END IF;
 
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[FK_FollowedConversation_fConversationKey>>Conversation_ConversationKey]') AND type = 'F')
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation] DROP CONSTRAINT [FK_FollowedConversation_fConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_FollowedConversation_Active]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation] DROP CONSTRAINT [DF_FollowedConversation_Active]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_FollowedConversation_ModDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation] DROP CONSTRAINT [DF_FollowedConversation_ModDate]
-END
-
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FollowedConversation]') AND type in (N'U'))
-DROP TABLE [dbo].[FollowedConversation]
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'FollowedConversation') > 0 THEN
+	DROP TABLE FollowedConversation;
+END IF;
 
 /*********************************************** Drop table Conversation *******************************************************/
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Conversation]') AND type in (N'U'))
-DROP TABLE [dbo].[Conversation]
-GO
+IF (SELECT COUNT(*) FROM information_schema.table_constraints WHERE TABLE_NAME = 'Conversation') > 0 THEN
+	DROP TABLE Conversation;
+END IF;
 
 /********** Create Conversation Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE Conversation(
+ConversationKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+fCommonRoomKey int NOT NULL,
+IsBranch boolean NOT NULL,
+IsClosed boolean NOT NULL,
+Active boolean NOT NULL,
+ModDate timestamp NOT NULL,
+CONSTRAINT FK_Conversation_fCommonRoomKey FOREIGN KEY (fCommonRoomKey) REFERENCES CommonRoom (CommonRoomKey)
+	ON DELETE CASCADE
+);
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[Conversation](
-[ConversationKey] [int] IDENTITY(1,1) NOT NULL,
-[fCommonRoomKey] [int] NOT NULL,
-[IsBranch] [bit] NOT NULL,
-[IsClosed] [bit] NOT NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_Conversation_ConversationKey] PRIMARY KEY CLUSTERED
-(
-[ConversationKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Conversation_fCommonRoomKey>>CommonRoom_CommonRoomKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Conversation]'))
-
-BEGIN
-ALTER TABLE [dbo].[Conversation]  WITH NOCHECK ADD  CONSTRAINT [FK_Conversation_fCommonRoomKey>>CommonRoom_CommonRoomKey] FOREIGN KEY([fCommonRoomKey])
-REFERENCES [dbo].[CommonRoom] ([CommonRoomKey])
-ALTER TABLE [dbo].[Conversation] CHECK CONSTRAINT [FK_Conversation_fCommonRoomKey>>CommonRoom_CommonRoomKey]
-END
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[Conversation] ADD CONSTRAINT [DF_Conversation_IsBranch] DEFAULT ((0)) FOR [IsBranch]
-GO
-
-ALTER TABLE [dbo].[Conversation] ADD CONSTRAINT [DF_Conversation_IsClosed] DEFAULT ((0)) FOR [IsClosed]
-GO
-
-ALTER TABLE [dbo].[Conversation] ADD CONSTRAINT [DF_Conversation_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[Conversation] ADD CONSTRAINT [DF_Conversation_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
+ALTER TABLE Conversation ALTER COLUMN IsBranch SET DEFAULT false;
+ALTER TABLE Conversation ALTER COLUMN IsClosed SET DEFAULT false;
+ALTER TABLE Conversation ALTER COLUMN Active SET DEFAULT true;
 
 /********** Create Post Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE Post(
+PostKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+Content varchar(700) NOT NULL,
+fScribdenUserKey int NOT NULL,
+fParentConversationKey int NOT NULL,
+fChildConversationKey int NULL,
+Active boolean NOT NULL,
+ModDate timestamp,
+CONSTRAINT FK_Conversation_fScribdenUserKey FOREIGN KEY (fScribdenUserKey) REFERENCES ScribdenUser (ScribdenUser)
+	ON DELETE NO ACTION,
+CONSTRAINT FK_Conversation_fParentConversationKey FOREIGN KEY (fParentConversationKey) REFERENCES Conversation (ConversationKey)
+	ON DELETE CASCADE,
+CONSTRAINT FK_Conversation_fChildConversationKey FOREIGN KEY (fChildConversationKey) REFERENCES Conversation (ConversationKey)
+	ON DELETE SET NULL
+);
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[Post](
-[PostKey] [int] IDENTITY(1,1) NOT NULL,
-[Content] [varchar](700) NOT NULL,
-[fScribdenUserKey] [int] NOT NULL,
-[fParentConversationKey] [int] NOT NULL,
-[fChildConversationKey] [int] NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_Post_PostKey] PRIMARY KEY CLUSTERED
-(
-[PostKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Post_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Post]'))
-
-BEGIN
-ALTER TABLE [dbo].[Post]  WITH NOCHECK ADD  CONSTRAINT [FK_Post_fScribdenUserKey>>ScribdenUser_ScribdenUserKey] FOREIGN KEY([fScribdenUserKey])
-REFERENCES [dbo].[ScribdenUser] ([ScribdenUserKey])
-ALTER TABLE [dbo].[Post] CHECK CONSTRAINT [FK_Post_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Post_fParentConversationKey>>Conversation_ConversationKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Post]'))
-
-BEGIN
-ALTER TABLE [dbo].[Post]  WITH NOCHECK ADD  CONSTRAINT [FK_Post_fParentConversationKey>>Conversation_ConversationKey] FOREIGN KEY([fParentConversationKey])
-REFERENCES [dbo].[Conversation] ([ConversationKey])
-ALTER TABLE [dbo].[Post] CHECK CONSTRAINT [FK_Post_fParentConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Post_fChildConversationKey>>Conversation_ConversationKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[Post]'))
-
-BEGIN
-ALTER TABLE [dbo].[Post]  WITH NOCHECK ADD  CONSTRAINT [FK_Post_fChildConversationKey>>Conversation_ConversationKey] FOREIGN KEY([fChildConversationKey])
-REFERENCES [dbo].[Conversation] ([ConversationKey])
-ALTER TABLE [dbo].[Post] CHECK CONSTRAINT [FK_Post_fChildConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[Post] ADD CONSTRAINT [DF_Post_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[Post] ADD CONSTRAINT [DF_Post_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
+ALTER TABLE Conversation ALTER COLUMN Active SET DEFAULT true;
 
 /********** Create FollowedConversation Table ************/
 
-SET ANSI_NULLS ON
-GO
+CREATE TABLE FollowedConversation(
+FollowedConversationKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+fScribdenUserKey int NOT NULL,
+fConversationKey int NOT NULL,
+Active boolean NOT NULL,
+ModDate timestamp NOT NULL,
+CONSTRAINT FK_FollowedConversation_fScribdenUserKey FOREIGN KEY (fScribdenUserKey) REFERENCES ScribdenUser (ScribdenUser)
+	ON DELETE CASCADE,
+CONSTRAINT FK_Conversation_fConversationKey FOREIGN KEY (fConversationKey) REFERENCES Conversation (ConversationKey)
+	ON DELETE CASCADE,
+);
 
-SET QUOTED_IDENTIFIER ON
-GO
+END$
 
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[FollowedConversation](
-[FollowedConversationKey] [int] IDENTITY(1,1) NOT NULL,
-[fScribdenUserKey] [int] NOT NULL,
-[fConversationKey] [int] NOT NULL,
-[Active] [bit] NOT NULL,
-[ModDate] [datetime] NOT NULL,
- CONSTRAINT [PK_FollowedConversation_FollowedConversationKey] PRIMARY KEY CLUSTERED
-(
-[FollowedConversationKey] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_FollowedConversation_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[FollowedConversation]'))
-
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation]  WITH NOCHECK ADD  CONSTRAINT [FK_FollowedConversation_fScribdenUserKey>>ScribdenUser_ScribdenUserKey] FOREIGN KEY([fScribdenUserKey])
-REFERENCES [dbo].[ScribdenUser] ([ScribdenUserKey])
-ALTER TABLE [dbo].[FollowedConversation] CHECK CONSTRAINT [FK_FollowedConversation_fScribdenUserKey>>ScribdenUser_ScribdenUserKey]
-END
-
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_FollowedConversation_fConversationKey>>Conversation_ConversationKey]') AND parent_object_id = OBJECT_ID(N'[dbo].[FollowedConversation]'))
-
-BEGIN
-ALTER TABLE [dbo].[FollowedConversation]  WITH NOCHECK ADD  CONSTRAINT [FK_FollowedConversation_fConversationKey>>Conversation_ConversationKey] FOREIGN KEY([fConversationKey])
-REFERENCES [dbo].[Conversation] ([ConversationKey])
-ALTER TABLE [dbo].[FollowedConversation] CHECK CONSTRAINT [FK_FollowedConversation_fConversationKey>>Conversation_ConversationKey]
-END
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[FollowedConversation] ADD CONSTRAINT [DF_FollowedConversation_Active] DEFAULT ((1)) FOR [Active]
-GO
-
-ALTER TABLE [dbo].[FollowedConversation] ADD CONSTRAINT [DF_FollowedConversation_ModDate] DEFAULT (getdate()) FOR [ModDate]
-GO
+delimiter ;
+CALL FeatureConversationDDL();

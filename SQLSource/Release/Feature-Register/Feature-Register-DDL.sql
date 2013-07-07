@@ -24,11 +24,11 @@ ScribdenUserKey int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 Username varchar(32) NOT NULL,
 Password varchar(32) NOT NULL,
 Email varchar(255) NOT NULL,
-Active bit NOT NULL,
+Active boolean NOT NULL,
 ModDate timestamp NOT NULL
 ) ENGINE=InnoDB;
 
-ALTER TABLE ScribdenUser ALTER COLUMN Active SET DEFAULT 1;
+ALTER TABLE ScribdenUser ALTER COLUMN Active SET DEFAULT true;
 
 END$
 

@@ -7,11 +7,24 @@ exports.getCommonRoomsByScribdenUserProxy = function(req, res) {
 
 exports.getCommonRoomsByScribdenUser = function(userid) {
     var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPGetCommonRoomsByScribdenUser @useridParam END', {
-            useridParam: { type: 'Int' }
-        }, { 
-            useridParam : userid
-        });
+    return util.generalQuery('SELECT  CR.CommonRoomKey, ' +
+                                        'CR.Name, ' +
+                                        'CR.Description, ' +
+                                        'CR.isPublic, ' +
+                                        'CR.Banner, ' +
+                                        'CR.HomeBG, ' +
+                                        'M.isModerator, ' +
+                                        'CR.Active, ' +
+                                        'CR.ModDate ' +
+                                'FROM CommonRoom CR ' +
+                                'INNER JOIN Members M ' +
+                                    'ON M.fCommonRoomKey = CR.CommonRoomKey ' +
+                                'WHERE ' +
+                                    'M.fScribdenUserKey = ? ' +
+                                    'AND M.Approved = 1 ' +
+                                    'AND CR.Active = 1 ' +
+                                    'AND M.Active = 1 ',
+                                [userid]);
 }
 
 exports.getUserCommonRoomByIdProxy = function(req, res) {
@@ -22,13 +35,24 @@ exports.getUserCommonRoomByIdProxy = function(req, res) {
 
 exports.getUserCommonRoomById = function(commonRoomID, userid) {
     var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPGetUserCommonRoomById @commonRoomIdParam, @useridParam END', {
-            commonRoomIdParam: { type: 'Int' },
-            useridParam: { type: 'Int' }
-        }, { 
-            commonRoomIdParam: commonRoomID,
-            useridParam : userid
-        });
+    return util.generalQuery('SELECT  CR.CommonRoomKey, ' +
+                                        'CR.Name, ' +
+                                        'CR.Description, ' +
+                                        'CR.isPublic, ' +
+                                        'CR.Banner, ' +
+                                        'CR.HomeBG, ' +
+                                        'M.isModerator, ' +
+                                        'M.Approved, ' +
+                                        'M.fListUserStatusKey ' +
+                                'FROM CommonRoom CR ' +
+                                'INNER JOIN Members M ' +
+                                    'ON M.fCommonRoomKey = CR.CommonRoomKey ' +
+                                'WHERE ' +
+                                    'CR.CommonRoomKey = ? ' +
+                                    'AND M.fScribdenUserKey = ? ' +
+                                    'AND CR.Active = 1 ' +
+                                    'AND M.Active = 1',
+                                    [commonRoomID, userid]);
 }
 
 exports.updateCommonRoomProxy = function(req, res) {
@@ -39,21 +63,41 @@ exports.updateCommonRoomProxy = function(req, res) {
 
 exports.updateCommonRoom = function(commonRoomID, name, description, isPublic, banner, homeBG) {
     var util = require('./util.js');
-    return util.generalQuery('BEGIN EXEC SPUpdateCommonRoom @commonRoomIDParam, @nameParam, @descriptionParam, @isPublicParam, @bannerParam, @homeBGParam END', {
-            commonRoomIDParam: { type: 'Int' },
-            nameParam: { type: 'VarChar', size: 255 },
-            descriptionParam: { type: 'VarChar', size: 255 },
-            isPublicParam: { type: 'Bit' },
-            bannerParam: { type: 'VarChar', size: 255 },
-            homeBGParam: { type: 'VarChar', size: 255 }
-        }, { 
-            commonRoomIDParam : commonRoomID,
-            nameParam: name || null,
-            descriptionParam: description || null,
-            isPublicParam: isPublic || null,
-            bannerParam: banner || null,
-            homeBGParam: homeBG || null
-        });
+    var query = 'UPDATE CommonRoom ';
+    var params = [];
+    
+    if(name) {
+        query += 'SET Name = ?, ';
+        params.push(name);
+    }
+    if(description) {
+        query += 'SET Description = ?, ';
+        params.push(description);
+    }
+    if(isPublic) {
+        query += 'SET IsPublic = ?, ';
+        params.push(isPublic);
+    }
+    if(banner) {
+        query += 'SET Banner = ?, ';
+        params.push(banner);
+    }
+    if(homeBG) {
+        query += 'SET HomeBG = ?, ';
+        params.push(homeBG);
+    }
+    
+    if(params.length > 0) {
+        query = query.substring(0, query.length - 2);
+        console.log(query);
+        query += ' WHERE CommonRoomKey = ? ';
+        params.push(commonRoomID);
+        
+        return util.generalQuery(query, params);
+    }
+    else {
+        return null; // @TODO: Replace these with ORM
+    }
 }
 
 exports.insertCommonRoomProxy = function(req, res) {
@@ -68,36 +112,28 @@ exports.insertCommonRoom = function(userid, name, description, isPublic, banner,
     var util = require('./util.js');
     var members = require('./members.js');
     var deferred = Q.defer();
-    var bannerParam;
-    var homeBGParam;
     
-    if(banner) {
-        bannerParam = { type: 'VarChar', size: 255 };
-    }
-    else {
-        bannerParam = { type: 'Object' };
+    if(!banner) {
+        banner = 'null';
     }
     
-    if(homeBG) {
-        homeBGParam = { type: 'VarChar', size: 255 };
-    }
-    else {
-        homeBGParam = { type: 'Object' };
+    if(!homeBG) {
+        homeBG = 'null';
     }
     
-    var cPromise = util.generalQuery('BEGIN EXEC SPInsertCommonRoom @nameParam, @descriptionParam, @isPublicParam, @bannerParam, @homeBGParam END', {
-            nameParam: { type: 'VarChar', size: 255 },
-            descriptionParam: { type: 'VarChar', size: 255 },
-            isPublicParam: { type: 'Bit' },
-            bannerParam: { type: 'VarChar', size: 255 },
-            homeBGParam: { type: 'VarChar', size: 255 }
-        }, { 
-            nameParam: name,
-            descriptionParam: description,
-            isPublicParam: isPublic,
-            bannerParam: banner || null,
-            homeBGParam: homeBG || null
-        });
+    var cPromise = util.generalQuery('INSERT INTO CommonRoom( Name, ' +
+                                                                'Description, ' +
+                                                                'isPublic, ' +
+                                                                'Banner, ' +
+                                                                'HomeBG ) ' +
+                                        'VALUES( ?, ' +
+                                                '?, ' +
+                                                '?, ' +
+                                                '?, ' +
+                                                '? ) ' +
+                                        'SELECT LAST_INSERT_ID() as CommonRoomKey',
+                                        [name, description, isPublic, banner, homeBG]);
+    
     cPromise.then(function(value) {
         console.log('added common room: ' + value);
         var listUserStatuses = require('./list-user-status.js');

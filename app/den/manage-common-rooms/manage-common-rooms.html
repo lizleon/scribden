@@ -12,14 +12,14 @@
         <div class="tab-content">
             <div class="tab-pane active" ng-class="{ active: isModerator }" id="tab1">
                 <div ng-repeat="commonRoom in commonRooms">
-                    <button id="createNewBtn" ng-hide="commonRoom[0]" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
-                    <button id="updateBtn" ng-show="commonRoom[0] && (commonRoom[6] == 1)" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">{{ commonRoom[1] }}</button>
+                    <button id="createNewBtn" ng-hide="commonRoom.CommonRoomKey" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">Create New Common Room</button>
+                    <button id="updateBtn" ng-show="commonRoom.CommonRoomKey && commonRoom.IsModerator" data-toggle="modal" ng-click="editCommonRoom(commonRoom)" class="btn">{{ commonRoom.Name }}</button>
                 </div>
             </div>
             <div class="tab-pane" ng-class="{ active: !isModerator }" id="tab2">
                 <div ng-repeat="commonRoom in commonRooms">
-                    <div ng-show="commonRoom[0] && (commonRoom[6] == 0)">
-                        <span>{{ commonRoom[1] }}</span>
+                    <div ng-show="commonRoom.CommonRoomKey && !commonRoom.IsModerator">
+                        <span>{{ commonRoom.Name }}</span>
                     </div>
                 </div>
             </div>

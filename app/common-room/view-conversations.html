@@ -1,10 +1,10 @@
 <div class="center hero-unit" ng-controller="CommonRoomConversationViewCtrl">
     <div ng-repeat="post in conversations">
-        <span id="username">{{ post[4] }}</span>
+        <span id="username">{{ post.fScribdenUserKey }}</span>
         <br />
         <div id="content">
-            {{ post[3] }}
+            {{ post.Content }}
         </div>
     </div>
-    <a href="#/conversation/common-room/{{ commonRoom[0] }}" id="addNewConversation" class="btn">Start a new conversation</a>
+    <a href="#/conversation/common-room/{{ commonRoom.CommonRoomKey }}" id="addNewConversation" class="btn">Start a new conversation</a>
 </div>

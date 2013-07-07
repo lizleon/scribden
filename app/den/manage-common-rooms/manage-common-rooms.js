@@ -32,7 +32,7 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
                   var userid = $cookieStore.get('user_id');
                   for(var i = 0; i < $scope.commonRooms.length; i++) {
                       // check if isModerator flag is set
-                      if($scope.commonRooms[i][6] == 1) {
+                      if($scope.commonRooms[i].IsModerator) {
                           moderatedCommonRooms++;
                       }
                   }
@@ -96,11 +96,11 @@ angular.module('den.manage-common-rooms', ['resources.common-room', 'resources.i
       
       $scope.form.isPublic = true;
       if($rootScope.editingCommonRoom) {
-          $scope.form.commonRoomID = $rootScope.editingCommonRoom[0];
-          $scope.form.name = $rootScope.editingCommonRoom[1];
-          $scope.form.description = $rootScope.editingCommonRoom[2];
+          $scope.form.commonRoomID = $rootScope.editingCommonRoom.CommonRoomKey;
+          $scope.form.name = $rootScope.editingCommonRoom.Name;
+          $scope.form.description = $rootScope.editingCommonRoom.Description;
           
-          if($rootScope.editingCommonRoom[4])
+          if($rootScope.editingCommonRoom.IsPublic)
               $scope.form.isPublic = true;
           else
               $scope.form.isPublic = false;
